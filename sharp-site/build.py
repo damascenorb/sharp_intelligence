@@ -58,7 +58,8 @@ def layout(name, title, desc, cur, body):
   </nav>
   <a class="btn btn-y" href="contato.html#desafio">Apresente seu desafio</a>
   <button class="burger" type="button" aria-expanded="false" aria-controls="sheet">Menu</button>
-</div><nav class="sheet" id="sheet" aria-label="Menu" hidden>{sheet}</nav></header>
+</div></header>
+<nav class="sheet" id="sheet" aria-label="Menu" hidden>{sheet}</nav>
 {body}
 <footer class="ft"><div class="wrap">
   <div class="ft-grid">
