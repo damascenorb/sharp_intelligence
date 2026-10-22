@@ -90,4 +90,9 @@ def render(b):
 for name, title, desc, cur in PAGES:
     body = render((ROOT / 'src/pages' / f'{name}.html').read_text(encoding='utf8'))
     (ROOT / f'{name}.html').write_text(layout(name, title, desc, cur, body), encoding='utf8')
+
+SITE = 'https://sharpintelligence.com.br'
+urls = ''.join(f'  <url><loc>{SITE}/{"" if name == "index" else name + ".html"}</loc></url>\n' for name, *_ in PAGES)
+(ROOT / 'sitemap.xml').write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n', encoding='utf8')
+(ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n', encoding='utf8')
 print('ok')
