@@ -49,4 +49,10 @@
       window.open('https://wa.me/5511993918460?text=' + encodeURIComponent(msg), '_blank', 'noopener');
     });
   }
+  const rail = document.querySelector('.rail-wrap .rail');
+  if (rail) {
+    const thumb = document.querySelector('.bar i');
+    const upd = () => { const max = rail.scrollWidth - rail.clientWidth, w = rail.clientWidth / rail.scrollWidth * 100; thumb.style.width = w + '%'; thumb.style.left = (max ? rail.scrollLeft / max * (100 - w) : 0) + '%'; };
+    rail.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+  }
 })();
