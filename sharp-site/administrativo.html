@@ -761,7 +761,8 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       Object.entries(cabecalho).forEach(([c, nome]) => {
         const cel = ws[XLSX.utils.encode_cell({ r, c: Number(c) })];
         dados[nome] = cel && cel.v !== undefined ? String(cel.v) : '';
-        if (/maps/i.test(nome) && cel && cel.l && cel.l.Target) maps = cel.l.Target;
+        // A biblioteca devolve o endereço com &amp; no lugar de &; sem decodificar, o Maps recebe o parâmetro errado.
+        if (/maps/i.test(nome) && cel && cel.l && cel.l.Target) maps = cel.l.Target.replace(/&amp;/g, '&');
       });
       if (Object.values(dados).some((v) => v !== '')) { dados.__maps = maps; linhas.push(dados); }
     }
