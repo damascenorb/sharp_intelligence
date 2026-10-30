@@ -73,6 +73,20 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 .dlg-f { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 16px 22px; border-top: 1px solid #dfe4f5; }
 .dlg-f .grupo { display: flex; gap: 10px; flex-wrap: wrap; }
 @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+.adm section { padding-block: 0; }
+.prio { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .85rem; margin-top: 8px; color: #0a1030; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 10px; }
+.dot.alta { background: #1b7f3a; }
+.dot.media { background: #d59b00; }
+.dot.baixa { background: #b42318; }
+.card-acoes { display: flex; justify-content: flex-end; margin-top: 12px; }
+.btn-chat { font: inherit; font-weight: 700; font-size: .85rem; padding: 7px 16px; border-radius: 999px; border: 0; background: #2f6bff; color: #fff; cursor: pointer; }
+.btn-chat:hover { background: #0b2bb8; }
+.link-zap { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; background: #1b7f3a; color: #fff; border-color: #1b7f3a; }
+.link-zap:hover { background: #156a2f; color: #fff; }
+.link-zap[hidden] { display: none; }
+#dlg-chat { width: min(600px, calc(100vw - 32px)); }
+#dlg-chat .chat { max-height: 58vh; }
 </style>
 
 </head>
@@ -121,23 +135,32 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     </div>
     <div class="dlg-b">
       <form id="form-lead" class="grid2"></form>
-      <div>
-        <p class="lbl">Observações</p>
-        <div class="chat" id="chat"></div>
-        <form class="envio" id="form-msg">
-          <input class="inp" id="msg-texto" type="text" maxlength="2000" placeholder="Escreva uma observação..." autocomplete="off">
-          <button class="btn-p" type="submit">Enviar</button>
-        </form>
-      </div>
     </div>
     <div class="dlg-f">
       <button class="btn-s btn-d" type="button" id="lead-excluir">Excluir lead</button>
       <div class="grupo">
+        <a class="btn-s link-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
         <button class="btn-s" type="button" id="lead-cancelar">Cancelar</button>
         <button class="btn-p" type="button" id="lead-salvar">Salvar alterações</button>
       </div>
     </div>
     <p class="err" id="lead-erro" role="alert" style="padding:0 22px 14px"></p>
+  </div>
+</dialog>
+
+<dialog id="dlg-chat">
+  <div class="dlg">
+    <div class="dlg-h">
+      <div><h2 id="chat-titulo">Observações</h2><p class="sub" id="chat-sub"></p></div>
+      <button class="icone" type="button" id="chat-fechar" aria-label="Fechar">✕</button>
+    </div>
+    <div class="dlg-b" style="gap:12px">
+      <div class="chat" id="chat"></div>
+      <form class="envio" id="form-msg">
+        <input class="inp" id="msg-texto" type="text" maxlength="2000" placeholder="Escreva uma observação..." autocomplete="off">
+        <button class="btn-p" type="submit">Enviar</button>
+      </form>
+    </div>
   </div>
 </dialog>
 
@@ -164,7 +187,6 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   const SUPABASE_KEY = 'sb_publishable_By1V1tGjx-Tc_ocuDVl9Sg_99Ij7U8N';
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Campos editáveis do lead, na ordem em que aparecem no pop-up.
   const CAMPOS = [
     ['nome', 'Nome comercial', 'text'],
     ['profissional', 'Profissional responsável', 'text'],
@@ -182,6 +204,13 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     ['oportunidade', 'Oportunidade comercial', 'textarea', true],
   ];
   const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
+  const PALETA = [['#8fdcf7', '#0a1030'], ['#2f6bff', '#ffffff'], ['#0b2bb8', '#ffffff'], ['#5cc8f0', '#0a1030'], ['#4a5478', '#ffffff']];
+  const MAPA = {
+    rank: 'Rank', nome: 'Nome comercial', profissional: 'Profissional responsável', segmento: 'Especialidade / segmento',
+    cidade: 'Cidade', uf: 'UF', endereco: 'Endereço (Google Maps)', telefone: 'Telefone', instagram: 'Instagram',
+    nota: 'Nota Google', avaliacoes: 'Nº avaliações', problemas: 'Problemas identificados',
+    oportunidade: 'Oportunidade comercial', prioridade: 'Prioridade', score: 'SCORE (0-100)',
+  };
 
   const $ = (id) => document.getElementById(id);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -194,12 +223,18 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     if (!d.startsWith('55')) d = '55' + d;
     return 'https://wa.me/' + d;
   }
+  function prioHtml(p) {
+    if (!p) return '';
+    const k = String(p).toLowerCase();
+    const cls = k.startsWith('alt') ? 'alta' : k.startsWith('bai') ? 'baixa' : 'media';
+    return `<p class="prio"><span class="dot ${cls}"></span>${esc(p)}</p>`;
+  }
 
-  const PALETA = [['#8fdcf7', '#0a1030'], ['#2f6bff', '#ffffff'], ['#0b2bb8', '#ffffff'], ['#5cc8f0', '#0a1030'], ['#4a5478', '#ffffff']];
   let colunas = [];
   let leads = [];
   let usuario = null;
   let leadAberto = null;
+  let chatAberto = null;
   let filtro = '';
 
   function avisar(id, msg, erro) {
@@ -236,9 +271,10 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     return `
     <article class="card" draggable="true" data-id="${esc(l.id)}">
       <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
+      ${prioHtml(l.prioridade)}
       ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
       ${local ? `<p class="meta">${esc(local)}</p>` : ''}
-      ${l.telefone ? `<p class="meta"><a class="link-wa" href="${waLink(l.telefone)}" target="_blank" rel="noopener">WhatsApp ${esc(l.telefone)}</a></p>` : ''}
+      <div class="card-acoes"><button class="btn-chat" type="button" data-chat="${esc(l.id)}">Chat</button></div>
     </article>`;
   }
 
@@ -247,10 +283,10 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     const visiveis = leads.filter((l) => !q || [l.nome, l.cidade, l.segmento, l.instagram, l.telefone].some((v) => String(v || '').toLowerCase().includes(q)));
     const grupos = colunas.map((c) => ({ id: c.id, nome: c.nome, editavel: true }));
     if (leads.some((l) => l.coluna_id == null)) grupos.push({ id: 'none', nome: 'Sem coluna', editavel: false });
-    $('board').innerHTML = grupos.map((g) => {
+    $('board').innerHTML = grupos.map((g, i) => {
       const itens = visiveis.filter((l) => (g.id === 'none' ? l.coluna_id == null : l.coluna_id === g.id));
+      const cor = PALETA[i % PALETA.length];
       const acoes = g.editavel ? `<button class="icone" type="button" data-editar-coluna="${esc(g.id)}" aria-label="Editar coluna ${esc(g.nome)}">✎</button>` : '';
-      const cor = PALETA[(grupos.indexOf(g)) % PALETA.length];
       return `<section class="col" data-col="${esc(g.id)}" style="--c:${cor[0]};--t:${cor[1]}">
         <header class="col-h"><h2>${esc(g.nome)}</h2><div class="acoes"><span class="count">${itens.length}</span>${acoes}</div></header>
         <div class="drop">${itens.length ? itens.map(cardHtml).join('') : '<p class="vazio">Arraste um lead para cá</p>'}</div>
@@ -270,8 +306,10 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     if (error) { lead.coluna_id = anterior; render(); avisar('erro', 'Não foi possível mover: ' + error.message, true); }
   }
 
-  // ----- Quadro: abrir card, arrastar e buscar -----
+  // ----- Quadro -----
   $('board').addEventListener('click', (e) => {
+    const chat = e.target.closest('[data-chat]');
+    if (chat) { abrirChat(chat.dataset.chat); return; }
     if (e.target.closest('a')) return;
     const editar = e.target.closest('[data-editar-coluna]');
     if (editar) { abrirColuna(editar.dataset.editarColuna); return; }
@@ -309,33 +347,21 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   });
   $('busca').addEventListener('input', (e) => { filtro = e.target.value.trim(); render(); });
 
-  // ----- Pop-up do lead: dados, edição, exclusão e chat -----
+  // ----- Pop-up do lead -----
   function formHtml(l) {
     return CAMPOS.map(([nome, rotulo, tipo, cheio]) => {
       const valor = l[nome] ?? '';
       const campo = tipo === 'textarea'
         ? `<textarea class="inp" name="${nome}" rows="3">${esc(valor)}</textarea>`
         : `<input class="inp" name="${nome}" type="${tipo}" value="${esc(valor)}"${tipo === 'number' ? ' step="any"' : ''}>`;
-      const extra = nome === 'telefone' ? `<a class="link-wa" data-wa-link href="${waLink(valor)}" target="_blank" rel="noopener">Abrir no WhatsApp</a>` : '';
-      return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}${extra}</label>`;
+      return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}</label>`;
     }).join('');
   }
 
-  $('form-lead').addEventListener('input', (e) => {
-    if (e.target.name === 'telefone') $('form-lead').querySelector('[data-wa-link]').href = waLink(e.target.value);
-  });
-
-  function msgHtml(m) {
-    const eu = usuario && m.autor === usuario.email;
-    const hora = new Date(m.criado_em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-    return `<div class="msg${eu ? ' eu' : ''}"><small>${eu ? 'Você' : esc(m.autor)} · ${esc(hora)}</small><p>${esc(m.texto)}</p></div>`;
-  }
-
-  async function carregarChat(id) {
-    const { data, error } = await sb.from('mensagens').select('*').eq('lead_id', id).order('criado_em', { ascending: true });
-    if (error) { $('chat').innerHTML = `<p class="vazio">Não foi possível carregar as observações.</p>`; return; }
-    $('chat').innerHTML = data.length ? data.map(msgHtml).join('') : '<p class="vazio">Nenhuma observação ainda.</p>';
-    $('chat').scrollTop = $('chat').scrollHeight;
+  function atualizarWa(tel) {
+    const a = $('lead-wa');
+    a.hidden = !tel;
+    a.href = tel ? waLink(tel) : '#';
   }
 
   function abrirLead(id) {
@@ -345,13 +371,15 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     $('lead-titulo').textContent = l.nome;
     $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
     $('form-lead').innerHTML = formHtml(l);
+    atualizarWa(l.telefone);
     $('lead-erro').textContent = '';
     resetarExclusao();
-    $('chat').innerHTML = '<p class="vazio">Carregando...</p>';
-    $('msg-texto').value = '';
     $('dlg-lead').showModal();
-    carregarChat(l.id);
   }
+
+  $('form-lead').addEventListener('input', (e) => {
+    if (e.target.name === 'telefone') atualizarWa(e.target.value.trim());
+  });
 
   function fecharLead() { leadAberto = null; $('dlg-lead').close(); }
   $('lead-fechar').addEventListener('click', fecharLead);
@@ -401,20 +429,51 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     avisar('ok', 'Lead excluído.');
   });
 
+  // ----- Chat de observações -----
+  function msgHtml(m) {
+    const eu = usuario && m.autor === usuario.email;
+    const hora = new Date(m.criado_em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    return `<div class="msg${eu ? ' eu' : ''}"><small>${eu ? 'Você' : esc(m.autor)} · ${esc(hora)}</small><p>${esc(m.texto)}</p></div>`;
+  }
+
+  async function carregarChat(id) {
+    const { data, error } = await sb.from('mensagens').select('*').eq('lead_id', id).order('criado_em', { ascending: true });
+    if (String(chatAberto) !== String(id)) return;
+    if (error) { $('chat').innerHTML = '<p class="vazio">Não foi possível carregar as observações.</p>'; return; }
+    $('chat').innerHTML = data.length ? data.map(msgHtml).join('') : '<p class="vazio">Nenhuma observação ainda.</p>';
+    $('chat').scrollTop = $('chat').scrollHeight;
+  }
+
+  function abrirChat(id) {
+    const l = leads.find((x) => String(x.id) === String(id));
+    if (!l) return;
+    chatAberto = l.id;
+    $('chat-titulo').textContent = 'Observações: ' + l.nome;
+    $('chat-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    $('chat').innerHTML = '<p class="vazio">Carregando...</p>';
+    $('msg-texto').value = '';
+    $('dlg-chat').showModal();
+    carregarChat(l.id);
+    $('msg-texto').focus();
+  }
+
+  function fecharChat() { chatAberto = null; $('dlg-chat').close(); }
+  $('chat-fechar').addEventListener('click', fecharChat);
+  $('dlg-chat').addEventListener('close', () => { chatAberto = null; });
+
   $('form-msg').addEventListener('submit', async (e) => {
     e.preventDefault();
     const txt = $('msg-texto').value.trim();
-    if (!txt || !leadAberto || !usuario) return;
-    const { error } = await sb.from('mensagens').insert({ lead_id: leadAberto, autor: usuario.email, texto: txt });
+    if (!txt || !chatAberto || !usuario) return;
+    const { error } = await sb.from('mensagens').insert({ lead_id: chatAberto, autor: usuario.email, texto: txt });
     if (error) { avisar('erro', 'Não foi possível enviar: ' + error.message, true); return; }
     $('msg-texto').value = '';
   });
 
-  // Chat em tempo real: mostra mensagens de quem estiver logado.
   function ouvirChat() {
     sb.channel('mensagens-crm')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, (payload) => {
-        if (String(payload.new.lead_id) !== String(leadAberto)) return;
+        if (String(payload.new.lead_id) !== String(chatAberto)) return;
         const vazio = $('chat').querySelector('.vazio');
         if (vazio) vazio.remove();
         $('chat').insertAdjacentHTML('beforeend', msgHtml(payload.new));
@@ -423,7 +482,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       .subscribe();
   }
 
-  // ----- Colunas: criar, editar e excluir -----
+  // ----- Colunas -----
   let colunaEditando = null;
   let excluirColunaPronto = false;
 
@@ -480,13 +539,6 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   });
 
   // ----- Importação da planilha (aba LEADS) -----
-  const MAPA = {
-    rank: 'Rank', nome: 'Nome comercial', profissional: 'Profissional responsável', segmento: 'Especialidade / segmento',
-    cidade: 'Cidade', uf: 'UF', endereco: 'Endereço (Google Maps)', telefone: 'Telefone', instagram: 'Instagram',
-    nota: 'Nota Google', avaliacoes: 'Nº avaliações', problemas: 'Problemas identificados',
-    oportunidade: 'Oportunidade comercial', prioridade: 'Prioridade', score: 'SCORE (0-100)',
-  };
-
   function mapear(r) {
     const o = { dados: r };
     for (const [campo, coluna] of Object.entries(MAPA)) {
