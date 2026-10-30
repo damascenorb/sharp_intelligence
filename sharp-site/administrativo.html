@@ -117,6 +117,8 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 .btn-ig { background: #c13584; }
 .btn-maps { background: #2f6bff; }
 .btn-maps:hover { background: #0b2bb8; }
+.btn-maps.off { background: #d5dae6; color: #6b7490; pointer-events: none; }
+.nicho { font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #4a5478; margin-top: 8px; }
 .btn-ig:hover { background: #a02a6e; }
 [hidden] { display: none !important; }
 .secoes { display: grid; gap: 22px; }
@@ -180,22 +182,28 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       <div><h2 id="lead-titulo"></h2><p class="sub" id="lead-sub"></p></div>
       <button class="icone" type="button" id="lead-fechar" aria-label="Fechar">✕</button>
     </div>
+    <div class="contato-acoes">
+      <div class="botoes">
+        <a class="btn-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
+        <a class="btn-ig" id="lead-ig" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
+        <a class="btn-maps" id="lead-maps" href="#" target="_blank" rel="noopener">Maps</a>
+      </div>
+    </div>
     <div class="tabs" role="tablist">
       <button class="tab on" type="button" data-tab="principal" role="tab">Principal</button>
+      <button class="tab" type="button" data-tab="diagnostico" role="tab">Diagnóstico</button>
+      <button class="tab" type="button" data-tab="mensagens" role="tab">Mensagens</button>
+      <button class="tab" type="button" data-tab="concorrencia" role="tab">Concorrência</button>
       <button class="tab" type="button" data-tab="extras" role="tab">Extras</button>
     </div>
     <div class="dlg-b">
-      <div id="painel-principal">
-        <div class="contato-acoes">
-          <div class="botoes">
-            <a class="btn-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
-            <a class="btn-ig" id="lead-ig" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
-            <a class="btn-maps" id="lead-maps" href="#" target="_blank" rel="noopener" hidden>Maps</a>
-          </div>
-        </div>
-        <form id="form-lead" class="secoes"></form>
-      </div>
-      <div id="painel-extras" hidden></div>
+      <form id="form-lead" class="secoes">
+        <div class="painel" data-aba="principal" id="painel-principal"></div>
+        <div class="painel" data-aba="diagnostico" id="painel-diagnostico" hidden></div>
+        <div class="painel" data-aba="mensagens" id="painel-mensagens" hidden></div>
+        <div class="painel" data-aba="concorrencia" id="painel-concorrencia" hidden></div>
+      </form>
+      <div class="painel" data-aba="extras" id="painel-extras" hidden></div>
     </div>
     <div class="dlg-f">
       <button class="btn-s btn-d" type="button" id="lead-excluir">Excluir lead</button>
@@ -375,6 +383,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     <article class="card" draggable="true" data-id="${esc(l.id)}">
       <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
       ${prioHtml(l.prioridade)}
+      ${l.dados && l.dados.Nicho ? `<p class="nicho">${esc(l.dados.Nicho)}</p>` : ''}
       ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
       ${local ? `<p class="meta">${esc(local)}</p>` : ''}
       <div class="card-acoes"><button class="btn-chat" type="button" data-chat="${esc(l.id)}">Chat</button></div>
@@ -460,23 +469,26 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     return `<label class="fl${cls}${dest}">${spec.label}${campo}</label>`;
   }
 
-  function montarPrincipal(l) {
-    let html = '', aberta = false, grade = '';
-    const fecha = () => { if (grade) { html += `<div class="grid2">${grade}</div>`; grade = ''; } };
+  const PAINEL = { 'Contato': 'principal', 'Presença digital': 'principal', 'Diagnóstico': 'diagnostico', 'Mensagens': 'mensagens', 'Concorrência': 'concorrencia' };
+  function montarPaineis(l) {
+    const out = { principal: '', diagnostico: '', mensagens: '', concorrencia: '' };
+    let atual = null, grade = '', sec = '';
+    const fecha = () => {
+      if (atual === null) return;
+      if (grade) { sec += `<div class="grid2">${grade}</div>`; grade = ''; }
+      if (sec) { out[atual] += sec + '</div>'; sec = ''; }
+    };
     SECOES.forEach((spec) => {
       if (spec.sec) {
         fecha();
-        if (aberta) html += '</div>';
-        html += `<div class="sec"><h3>${spec.sec}</h3>`;
-        aberta = true;
+        atual = PAINEL[spec.sec];
+        sec = `<div class="sec"><h3>${spec.sec}</h3>`;
       } else {
         grade += campoHtml(spec, valorDe(l, spec));
-        if (spec.cheio || spec.tipo === 'textarea') { fecha(); }
       }
     });
     fecha();
-    if (aberta) html += '</div>';
-    return html;
+    return out;
   }
 
   function montarExtras(l) {
@@ -506,9 +518,12 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 
   function atualizarMapa(l) {
     const a = $('lead-maps');
-    a.hidden = !l.maps;
-    if (l.maps) a.href = l.maps;
+    a.classList.toggle('off', !l.maps);
+    a.href = l.maps || '#';
+    a.setAttribute('aria-disabled', l.maps ? 'false' : 'true');
+    a.title = l.maps ? 'Abrir no Google Maps' : 'Sem link do Google Maps';
   }
+  $('lead-maps').addEventListener('click', (e) => { if (e.currentTarget.classList.contains('off')) e.preventDefault(); });
 
   function abrirLead(id) {
     const l = leads.find((x) => String(x.id) === String(id));
@@ -516,7 +531,8 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     leadAberto = l.id;
     $('lead-titulo').textContent = l.nome;
     $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
-    $('form-lead').innerHTML = montarPrincipal(l);
+    const paineis = montarPaineis(l);
+    Object.entries(paineis).forEach(([aba, html]) => { $('painel-' + aba).innerHTML = html; });
     $('painel-extras').innerHTML = montarExtras(l);
     atualizarMapa(l);
     atualizarBotoes();
@@ -528,8 +544,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 
   function trocarAba(nome) {
     document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t.dataset.tab === nome));
-    $('painel-principal').hidden = nome !== 'principal';
-    $('painel-extras').hidden = nome !== 'extras';
+    document.querySelectorAll('.painel').forEach((pn) => { pn.hidden = pn.dataset.aba !== nome; });
   }
   document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => trocarAba(t.dataset.tab)));
 
