@@ -9,31 +9,37 @@
 <link rel="icon" type="image/png" href="assets/sharp-mark-dark.png">
 <link rel="stylesheet" href="styles.css">
 <style>
+body { background: #f3f5fc; color: #0a1030; }
+.hd { background: rgba(255,255,255,.92); border-bottom: 1px solid #dfe4f5; }
+.hd .brand { color: #0a1030; }
 .adm { padding-block: 40px 80px; }
-.adm h1 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem); }
-.sub, .muted { color: var(--mute); }
-.box { background: var(--bg2); border: 1px solid var(--line); border-radius: 18px; padding: 24px; max-width: 420px; }
+.adm h1 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem); color: #0a1030; }
+.sub, .muted { color: #4a5478; }
+.box { background: #fff; border: 1px solid #dfe4f5; border-radius: 18px; padding: 24px; max-width: 420px; box-shadow: 0 24px 50px rgba(10,16,48,.08); }
 .field { display: grid; gap: 6px; margin-bottom: 16px; }
-.field label, .lbl { font-weight: 700; font-size: .9rem; }
-.inp { font: inherit; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-height: 44px; width: 100%; }
+.field label, .lbl, .fl { font-weight: 700; font-size: .9rem; color: #0a1030; }
+.inp { font: inherit; padding: 11px 14px; border-radius: 12px; border: 1px solid #dfe4f5; background: #fff; color: #0a1030; min-height: 44px; width: 100%; }
+.inp:focus { outline: 2px solid #2f6bff; outline-offset: 1px; }
 textarea.inp { min-height: 88px; resize: vertical; }
-.err { color: #ff9b9b; min-height: 1.4em; margin-bottom: 8px; }
-.ok { color: #9be7a8; min-height: 1.4em; margin-top: 8px; }
+.err { color: #b42318; min-height: 1.4em; margin-bottom: 8px; }
+.ok { color: #1b7f3a; min-height: 1.4em; margin-top: 8px; }
 .bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; justify-content: space-between; margin-bottom: 20px; }
 .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .tools .inp { width: 230px; }
-.btn-s { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); cursor: pointer; min-height: 44px; }
-.btn-s:hover { border-color: var(--cyan); }
-.btn-d { border-color: #7a2b2b; color: #ffb4b4; }
-.btn-d.confirma { background: #7a2b2b; color: #fff; }
+.btn-s { font: inherit; font-weight: 700; padding: 10px 18px; border-radius: 999px; border: 1px solid #dfe4f5; background: #fff; color: #0a1030; cursor: pointer; min-height: 44px; }
+.btn-s:hover { border-color: #2f6bff; color: #2f6bff; }
+.btn-d { color: #b42318; border-color: #f0c4c0; }
+.btn-d.confirma { background: #b42318; color: #fff; border-color: #b42318; }
+.btn-p { font: inherit; font-weight: 700; padding: 11px 22px; border-radius: 999px; border: 0; background: #2f6bff; color: #fff; cursor: pointer; min-height: 44px; }
+.btn-p:disabled { opacity: .6; cursor: default; }
 .board { display: grid; grid-auto-flow: column; grid-auto-columns: min(340px, 84vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; align-items: start; }
-.col { background: #f3f5fc; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
+.col { background: #e8ecf8; border: 1px solid #dfe4f5; border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
 .col-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 16px; border-radius: 16px 16px 0 0; background: var(--c); color: var(--t); }
 .col-h h2 { font-size: 1rem; }
 .col-h .acoes { display: flex; align-items: center; gap: 8px; }
-.count { background: rgba(255,255,255,.22); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
-.icone { font: inherit; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); color: inherit; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; }
-.icone:hover { background: rgba(255,255,255,.32); }
+.count { background: rgba(255,255,255,.3); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
+.icone { font: inherit; background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.45); color: inherit; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; }
+.icone:hover { background: rgba(255,255,255,.4); }
 .drop { display: grid; gap: 10px; padding: 10px; align-content: start; min-height: 120px; border-radius: 0 0 16px 16px; }
 .drop.over { background: rgba(47,107,255,.10); }
 .card { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
@@ -44,28 +50,31 @@ textarea.inp { min-height: 88px; resize: vertical; }
 .score { flex: 0 0 auto; background: #2f6bff; color: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
 .card .seg { color: #2f6bff; font-size: .88rem; margin-top: 6px; font-weight: 600; }
 .card .meta { color: #4a5478; font-size: .85rem; margin-top: 4px; }
+.wa { color: #1b7f3a; font-weight: 700; text-decoration: none; }
+.wa:hover { text-decoration: underline; }
 .vazio { color: #4a5478; font-size: .9rem; padding: 8px 4px; }
-dialog { background: var(--bg2); color: var(--text); border: 1px solid var(--line); border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); }
-dialog::backdrop { background: rgba(0,0,0,.6); }
+dialog { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); box-shadow: 0 30px 80px rgba(10,16,48,.25); }
+dialog::backdrop { background: rgba(10,16,48,.45); }
 .dlg { display: flex; flex-direction: column; max-height: calc(100dvh - 40px); }
-.dlg-h { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
-.dlg-h h2 { font-size: 1.3rem; }
+.dlg-h { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 20px 22px; border-bottom: 1px solid #dfe4f5; }
+.dlg-h h2 { font-size: 1.3rem; color: #0a1030; }
 .dlg-b { overflow-y: auto; padding: 20px 22px; display: grid; gap: 22px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
 .grid2 .full { grid-column: 1 / -1; }
-.fl { display: grid; gap: 6px; font-size: .85rem; font-weight: 700; }
+.fl { display: grid; gap: 6px; }
 .chat { display: grid; gap: 10px; max-height: 280px; overflow-y: auto; padding: 4px; }
-.msg { max-width: 85%; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
-.msg.eu { justify-self: end; background: rgba(47,107,255,.18); border-color: rgba(47,107,255,.4); }
-.msg small { display: block; color: var(--mute); font-size: .75rem; margin-bottom: 4px; }
+.msg { max-width: 85%; background: #f3f5fc; border: 1px solid #dfe4f5; border-radius: 14px; padding: 10px 12px; }
+.msg.eu { justify-self: end; background: #2f6bff; border-color: #2f6bff; color: #fff; }
+.msg small { display: block; color: #4a5478; font-size: .75rem; margin-bottom: 4px; }
+.msg.eu small { color: #dbe6ff; }
 .msg p { white-space: pre-wrap; overflow-wrap: anywhere; }
-.envio { display: flex; gap: 10px; }
+.envio { display: flex; gap: 10px; margin-top: 10px; }
 .envio .inp { flex: 1; }
-.dlg-f { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 16px 22px; border-top: 1px solid var(--line); }
+.dlg-f { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 16px 22px; border-top: 1px solid #dfe4f5; }
 .dlg-f .grupo { display: flex; gap: 10px; flex-wrap: wrap; }
-.btn-y { cursor: pointer; }
 @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
 </style>
+
 </head>
 <body>
 <header class="hd"><div class="wrap hd-in">
@@ -81,7 +90,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
       <div class="field"><label for="email">E-mail</label><input class="inp" id="email" type="email" autocomplete="username" required></div>
       <div class="field"><label for="senha">Senha</label><input class="inp" id="senha" type="password" autocomplete="current-password" required></div>
       <p class="err" id="err" role="alert"></p>
-      <button class="btn btn-y" type="submit" id="entrar">Entrar</button>
+      <button class="btn-p" type="submit" id="entrar">Entrar</button>
     </form>
   </section>
 
@@ -117,7 +126,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
         <div class="chat" id="chat"></div>
         <form class="envio" id="form-msg">
           <input class="inp" id="msg-texto" type="text" maxlength="2000" placeholder="Escreva uma observação..." autocomplete="off">
-          <button class="btn btn-y" type="submit">Enviar</button>
+          <button class="btn-p" type="submit">Enviar</button>
         </form>
       </div>
     </div>
@@ -125,7 +134,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
       <button class="btn-s btn-d" type="button" id="lead-excluir">Excluir lead</button>
       <div class="grupo">
         <button class="btn-s" type="button" id="lead-cancelar">Cancelar</button>
-        <button class="btn btn-y" type="button" id="lead-salvar">Salvar alterações</button>
+        <button class="btn-p" type="button" id="lead-salvar">Salvar alterações</button>
       </div>
     </div>
     <p class="err" id="lead-erro" role="alert" style="padding:0 22px 14px"></p>
@@ -141,7 +150,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
       <button class="btn-s btn-d" type="button" id="coluna-excluir" hidden>Excluir coluna</button>
       <div class="grupo">
         <button class="btn-s" type="button" id="coluna-cancelar">Cancelar</button>
-        <button class="btn btn-y" type="submit" id="coluna-salvar">Salvar</button>
+        <button class="btn-p" type="submit" id="coluna-salvar">Salvar</button>
       </div>
     </div>
   </form>
@@ -178,6 +187,13 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const numero = (v) => { if (v === '' || v == null) return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
   const texto = (v) => (v == null ? null : String(v).trim() || null);
+  // Telefone brasileiro vira link wa.me, ex.: (11) 98484-7000 -> https://wa.me/5511984847000
+  function waLink(tel) {
+    let d = String(tel || '').replace(/\D/g, '');
+    if (!d) return '#';
+    if (!d.startsWith('55')) d = '55' + d;
+    return 'https://wa.me/' + d;
+  }
 
   const PALETA = [['#8fdcf7', '#0a1030'], ['#2f6bff', '#ffffff'], ['#0b2bb8', '#ffffff'], ['#5cc8f0', '#0a1030'], ['#4a5478', '#ffffff']];
   let colunas = [];
@@ -222,6 +238,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
       <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
       ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
       ${local ? `<p class="meta">${esc(local)}</p>` : ''}
+      ${l.telefone ? `<p class="meta"><a class="wa" href="${waLink(l.telefone)}" target="_blank" rel="noopener">WhatsApp ${esc(l.telefone)}</a></p>` : ''}
     </article>`;
   }
 
@@ -255,6 +272,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
 
   // ----- Quadro: abrir card, arrastar e buscar -----
   $('board').addEventListener('click', (e) => {
+    if (e.target.closest('a')) return;
     const editar = e.target.closest('[data-editar-coluna]');
     if (editar) { abrirColuna(editar.dataset.editarColuna); return; }
     const card = e.target.closest('.card');
@@ -298,9 +316,14 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
       const campo = tipo === 'textarea'
         ? `<textarea class="inp" name="${nome}" rows="3">${esc(valor)}</textarea>`
         : `<input class="inp" name="${nome}" type="${tipo}" value="${esc(valor)}"${tipo === 'number' ? ' step="any"' : ''}>`;
-      return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}</label>`;
+      const extra = nome === 'telefone' ? `<a class="wa" data-wa-link href="${waLink(valor)}" target="_blank" rel="noopener">Abrir no WhatsApp</a>` : '';
+      return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}${extra}</label>`;
     }).join('');
   }
+
+  $('form-lead').addEventListener('input', (e) => {
+    if (e.target.name === 'telefone') $('form-lead').querySelector('[data-wa-link]').href = waLink(e.target.value);
+  });
 
   function msgHtml(m) {
     const eu = usuario && m.autor === usuario.email;
