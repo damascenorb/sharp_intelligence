@@ -55,7 +55,7 @@ textarea.inp { min-height: 88px; resize: vertical; }
 .vazio { color: #4a5478; font-size: .9rem; padding: 8px 4px; }
 dialog { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); box-shadow: 0 30px 80px rgba(10,16,48,.25); }
 dialog::backdrop { background: rgba(10,16,48,.45); }
-.dlg { display: flex; flex-direction: column; max-height: calc(100dvh - 40px); }
+.dlg { display: flex; flex-direction: column; max-height: calc(100vh - 40px); max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); }
 .dlg-h { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 20px 22px; border-bottom: 1px solid #dfe4f5; }
 .dlg-h h2 { font-size: 1.3rem; color: #0a1030; }
 .dlg-b { overflow-y: auto; padding: 20px 22px; display: grid; gap: 22px; }
@@ -132,6 +132,40 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 .extras a { color: #2f6bff; text-decoration: underline; }
 
 .adm section { padding-block: 0; }
+
+/* ----- Celular ----- */
+.tab-bar-wrap { overflow-x: auto; }
+@media (max-width: 760px) {
+  .adm { padding-block: 24px 60px; }
+  .bar { flex-direction: column; align-items: stretch; }
+  .bar > div:first-child { width: 100%; }
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .tools .inp { width: 100%; grid-column: 1 / -1; }
+  .tools .btn-s, .tools label.btn-s { width: 100%; text-align: center; padding-inline: 8px; font-size: .9rem; }
+  .tools .muted { grid-column: 1 / -1; font-size: .85rem; overflow-wrap: anywhere; }
+  .board { grid-auto-columns: 86vw; gap: 10px; margin-inline: -16px; padding-inline: 16px; scroll-padding-inline: 16px; }
+  .card { padding: 12px; }
+  .card h3 { font-size: .95rem; }
+  .tabs { overflow-x: auto; gap: 2px; padding-inline: 12px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 10px 12px; white-space: nowrap; font-size: .92rem; }
+  .contato-acoes { flex-direction: column; align-items: stretch; }
+  .botoes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .botoes a { padding-inline: 6px; font-size: .9rem; }
+  dialog { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; margin: 0; }
+  dialog .dlg { height: 100vh; max-height: 100vh; }
+  .dlg-h, .dlg-b, .dlg-f { padding-inline: 14px; }
+  .dlg-f { flex-direction: column-reverse; align-items: stretch; }
+  .dlg-f .grupo { display: grid; grid-template-columns: 1fr 1fr; }
+  .dlg-f .grupo .btn-p, .dlg-f .grupo .btn-s { width: 100%; }
+  .dlg-f > .btn-d { width: 100%; }
+  .envio { flex-direction: column; }
+  .envio .btn-p { width: 100%; }
+  #dlg-zerar, #dlg-coluna { width: calc(100vw - 24px); height: auto; max-height: 90vh; border-radius: 18px; }
+  #dlg-zerar .dlg, #dlg-coluna .dlg { height: auto; max-height: 90vh; }
+  .grid2 { grid-template-columns: 1fr; }
+  .inp { font-size: 16px; }
+}
 </style>
 
 </head>
@@ -318,8 +352,16 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   };
   const CSV_COLS = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
 
+  // Compatível com navegadores móveis antigos (sem <dialog>.showModal).
+  function abrirDialog(d) {
+    if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+  }
+  function fecharDialog(d) {
+    if (d.close) d.close(); else d.removeAttribute('open');
+  }
+
   const $ = (id) => document.getElementById(id);
-  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const esc = (v) => String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const numero = (v) => { if (v === '' || v == null) return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
   const texto = (v) => (v == null ? null : String(v).trim() || null);
   const dig = (tel) => String(tel || '').replace(/\D/g, '');
@@ -339,7 +381,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     const cls = k.startsWith('alt') ? 'alta' : k.startsWith('bai') ? 'baixa' : 'media';
     return `<p class="prio"><span class="dot ${cls}"></span>${esc(p)}</p>`;
   }
-  const valorDe = (l, spec) => (spec.src === 'col' ? l[spec.key] : (l.dados || {})[spec.key]) ?? '';
+  const valorDe = (l, spec) => (spec.src === 'col' ? l[spec.key] : (l.dados || {})[spec.key]) || '';
 
   let colunas = [];
   let leads = [];
@@ -539,7 +581,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     trocarAba('principal');
     $('lead-erro').textContent = '';
     resetarExclusao();
-    $('dlg-lead').showModal();
+    abrirDialog($('dlg-lead'));
   }
 
   function trocarAba(nome) {
@@ -552,7 +594,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     if (['telefone', 'msg1', 'instagram'].includes(e.target.name)) atualizarBotoes();
   });
 
-  function fecharLead() { leadAberto = null; $('dlg-lead').close(); }
+  function fecharLead() { leadAberto = null; fecharDialog($('dlg-lead')); }
   $('lead-fechar').addEventListener('click', fecharLead);
   $('lead-cancelar').addEventListener('click', fecharLead);
   $('dlg-lead').addEventListener('close', () => { leadAberto = null; });
@@ -568,7 +610,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       const el = f.elements[spec.id];
       if (!el) return;
       if (spec.src === 'col') cols[spec.key] = spec.tipo === 'number' ? numero(el.value) : texto(el.value);
-      else dados[spec.key] = texto(el.value) ?? '';
+      else dados[spec.key] = texto(el.value) || '';
     });
     if (!cols.nome) { $('lead-erro').textContent = 'O nome comercial é obrigatório.'; return; }
     $('lead-salvar').disabled = true;
@@ -614,9 +656,9 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     $('zerar-texto').textContent = 'Isso apaga todos os leads e as observações do chat. Não dá para desfazer.';
     $('zerar-sim').textContent = 'Sim';
     $('zerar-erro').textContent = '';
-    $('dlg-zerar').showModal();
+    abrirDialog($('dlg-zerar'));
   });
-  $('zerar-nao').addEventListener('click', () => $('dlg-zerar').close());
+  $('zerar-nao').addEventListener('click', () => fecharDialog($('dlg-zerar')));
   $('zerar-sim').addEventListener('click', async () => {
     if (passoZerar === 1) {
       passoZerar = 2;
@@ -630,7 +672,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     $('zerar-sim').disabled = false;
     if (error) { $('zerar-erro').textContent = 'Não foi possível apagar: ' + error.message; return; }
     leads = [];
-    $('dlg-zerar').close();
+    fecharDialog($('dlg-zerar'));
     fecharChat();
     render();
     avisar('ok', 'Todos os leads foram apagados.');
@@ -659,12 +701,12 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     $('chat-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
     $('chat').innerHTML = '<p class="vazio">Carregando...</p>';
     $('msg-texto').value = '';
-    $('dlg-chat').showModal();
+    abrirDialog($('dlg-chat'));
     carregarChat(l.id);
     $('msg-texto').focus();
   }
 
-  function fecharChat() { chatAberto = null; $('dlg-chat').close(); }
+  function fecharChat() { chatAberto = null; fecharDialog($('dlg-chat')); }
   $('chat-fechar').addEventListener('click', fecharChat);
   $('dlg-chat').addEventListener('close', () => { chatAberto = null; });
 
@@ -703,12 +745,12 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     excluirColunaPronto = false;
     $('coluna-excluir').textContent = 'Excluir coluna';
     $('coluna-excluir').classList.remove('confirma');
-    $('dlg-coluna').showModal();
+    abrirDialog($('dlg-coluna'));
     $('coluna-nome').focus();
   }
 
   $('nova-coluna').addEventListener('click', () => abrirColuna(null));
-  $('coluna-cancelar').addEventListener('click', () => $('dlg-coluna').close());
+  $('coluna-cancelar').addEventListener('click', () => fecharDialog($('dlg-coluna')));
 
   $('form-coluna').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -724,7 +766,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       if (error) { $('coluna-erro').textContent = 'Não foi possível criar: ' + error.message; return; }
       colunas.push(data);
     }
-    $('dlg-coluna').close();
+    fecharDialog($('dlg-coluna'));
     render();
   });
 
@@ -740,7 +782,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     if (error) { $('coluna-erro').textContent = 'Não foi possível excluir: ' + error.message; return; }
     colunas = colunas.filter((x) => x.id !== colunaEditando);
     leads.forEach((l) => { if (l.coluna_id === colunaEditando) l.coluna_id = null; });
-    $('dlg-coluna').close();
+    fecharDialog($('dlg-coluna'));
     render();
     avisar('ok', 'Coluna excluída. Os leads dela ficaram em "Sem coluna".');
   });
@@ -808,7 +850,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 
   // ----- Exportação em CSV -----
   $('exportar').addEventListener('click', () => {
-    const cel = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const cel = (v) => '"' + String(v || '').replace(/"/g, '""') + '"';
     const nomeColuna = (id) => (colunas.find((c) => c.id === id) || {}).nome || '';
     const cab = [...CSV_COLS, 'coluna'];
     const linhas = [cab.join(';')].concat(leads.map((l) => [...CSV_COLS.map((c) => l[c]), nomeColuna(l.coluna_id)].map(cel).join(';')));
