@@ -42,14 +42,14 @@ textarea.inp { min-height: 88px; resize: vertical; }
 .icone:hover { background: rgba(255,255,255,.4); }
 .drop { display: grid; gap: 10px; padding: 10px; align-content: start; min-height: 120px; border-radius: 0 0 16px 16px; }
 .drop.over { background: rgba(47,107,255,.10); }
-.card { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
-.card:hover { border-color: #2f6bff; }
-.card.arrastando { opacity: .45; }
+.lead-card { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
+.lead-card:hover { border-color: #2f6bff; }
+.lead-card.arrastando { opacity: .45; }
 .card-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
-.card h3 { font-size: 1rem; line-height: 1.25; color: #0a1030; }
+.lead-card h3 { font-size: 1rem; line-height: 1.25; color: #0a1030; }
 .score { flex: 0 0 auto; background: #2f6bff; color: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
-.card .seg { color: #2f6bff; font-size: .88rem; margin-top: 6px; font-weight: 600; }
-.card .meta { color: #4a5478; font-size: .85rem; margin-top: 4px; }
+.lead-card .seg { color: #2f6bff; font-size: .88rem; margin-top: 6px; font-weight: 600; }
+.lead-card .meta { color: #4a5478; font-size: .85rem; margin-top: 4px; }
 .link-wa { color: #1b7f3a; font-weight: 700; text-decoration: none; }
 .link-wa:hover { text-decoration: underline; }
 .vazio { color: #4a5478; font-size: .9rem; padding: 8px 4px; }
@@ -144,8 +144,8 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   .tools .btn-s, .tools label.btn-s { width: 100%; text-align: center; padding-inline: 8px; font-size: .9rem; }
   .tools .muted { grid-column: 1 / -1; font-size: .85rem; overflow-wrap: anywhere; }
   .board { grid-auto-columns: 86vw; gap: 10px; margin-inline: -16px; padding-inline: 16px; scroll-padding-inline: 16px; }
-  .card { padding: 12px; }
-  .card h3 { font-size: .95rem; }
+  .lead-card { padding: 12px; }
+  .lead-card h3 { font-size: .95rem; }
   .tabs { overflow-x: auto; gap: 2px; padding-inline: 12px; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab { padding: 10px 12px; white-space: nowrap; font-size: .92rem; }
@@ -422,7 +422,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   function cardHtml(l) {
     const local = [l.cidade, l.uf].filter(Boolean).join(' - ');
     return `
-    <article class="card" draggable="true" data-id="${esc(l.id)}">
+    <article class="lead-card" draggable="true" data-id="${esc(l.id)}">
       <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
       ${prioHtml(l.prioridade)}
       ${l.dados && l.dados.Nicho ? `<p class="nicho">${esc(l.dados.Nicho)}</p>` : ''}
@@ -467,18 +467,18 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     if (e.target.closest('a')) return;
     const editar = e.target.closest('[data-editar-coluna]');
     if (editar) { abrirColuna(editar.dataset.editarColuna); return; }
-    const card = e.target.closest('.card');
+    const card = e.target.closest('.lead-card');
     if (card) abrirLead(card.dataset.id);
   });
   $('board').addEventListener('dragstart', (e) => {
-    const card = e.target.closest('.card');
+    const card = e.target.closest('.lead-card');
     if (!card) return;
     e.dataTransfer.setData('text/plain', card.dataset.id);
     e.dataTransfer.effectAllowed = 'move';
     card.classList.add('arrastando');
   });
   $('board').addEventListener('dragend', (e) => {
-    const card = e.target.closest('.card');
+    const card = e.target.closest('.lead-card');
     if (card) card.classList.remove('arrastando');
     document.querySelectorAll('.drop.over').forEach((d) => d.classList.remove('over'));
   });
