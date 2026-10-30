@@ -4,41 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Área administrativa | Sharp Intelligence</title>
+<title>CRM Sharp | Área administrativa</title>
 <meta name="theme-color" content="#050b1e">
 <link rel="icon" type="image/png" href="assets/sharp-mark-dark.png">
 <link rel="stylesheet" href="styles.css">
 <style>
-.adm { padding-block: 48px 80px; }
-.adm h1 { font-size: clamp(1.8rem, 1.2rem + 2vw, 2.6rem); margin-bottom: 8px; }
-.adm .sub { color: var(--mute); margin-bottom: 28px; }
+.adm { padding-block: 40px 80px; }
+.adm h1 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem); }
+.sub { color: var(--mute); margin-top: 6px; }
+.muted { color: var(--mute); }
 .box { background: var(--bg2); border: 1px solid var(--line); border-radius: 18px; padding: 24px; max-width: 420px; }
 .field { display: grid; gap: 6px; margin-bottom: 16px; }
 .field label { font-weight: 700; font-size: .95rem; }
-.field input { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-height: 44px; }
+.inp { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-height: 44px; width: 100%; }
 .err { color: #ff9b9b; min-height: 1.4em; margin-bottom: 8px; }
-.bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; }
-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
-th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { background: rgba(255,255,255,.04); font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--mute); }
-td select { font: inherit; padding: 8px 10px; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--line); }
-.muted { color: var(--mute); }
+.bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; justify-content: space-between; margin-bottom: 20px; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.tools .inp { width: 240px; }
+.btn-s { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); cursor: pointer; min-height: 44px; }
+.btn-s:hover { border-color: var(--cyan); }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 82vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; }
+.col { background: var(--bg2); border: 1px solid var(--line); border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
+.col-h { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.col-h h2 { font-size: 1rem; }
+.count { background: rgba(255,255,255,.08); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
+.drop { display: grid; gap: 10px; padding: 10px; align-content: start; flex: 1; min-height: 120px; border-radius: 0 0 16px 16px; }
+.drop.over { background: rgba(92,200,240,.10); }
+.card { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; font-size: .9rem; cursor: grab; min-width: 0; overflow-wrap: anywhere; }
+.card.arrastando { opacity: .45; }
+.card h3 { font-size: 1rem; margin-bottom: 2px; }
+.card .seg { color: var(--accent); font-size: .85rem; }
+.card .meta { color: var(--mute); font-size: .85rem; margin-top: 4px; }
+.card .prob { color: var(--mute); margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card details { margin-top: 10px; }
+.card summary { cursor: pointer; color: var(--accent); font-weight: 700; font-size: .85rem; }
+.card details p { margin-top: 8px; color: var(--mute); }
+.card textarea { width: 100%; margin-top: 6px; font: inherit; font-size: .88rem; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); resize: vertical; }
+.mover { display: flex; gap: 8px; align-items: center; margin-top: 12px; font-size: .85rem; color: var(--mute); }
+.mover select { font: inherit; padding: 6px 8px; border-radius: 10px; background: var(--bg2); color: var(--text); border: 1px solid var(--line); flex: 1; }
+.ok { color: #9be7a8; min-height: 1.4em; margin-top: 8px; }
 </style>
 </head>
 <body>
 <header class="hd"><div class="wrap hd-in">
   <a class="brand" href="index.html" aria-label="Sharp Intelligence, início"><img src="assets/sharp-mark.png" alt="" width="29" height="42"><span>Sharp</span></a>
-  <span class="muted">Área administrativa</span>
+  <span class="muted">CRM</span>
 </div></header>
 
 <main class="adm wrap" id="conteudo">
   <section id="login" hidden>
     <h1>Entrar</h1>
     <p class="sub">Acesso restrito à equipe Sharp.</p>
-    <form class="box" id="form-login" novalidate>
-      <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required></div>
-      <div class="field"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required></div>
+    <form class="box" id="form-login" novalidate style="margin-top:24px">
+      <div class="field"><label for="email">E-mail</label><input class="inp" id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="senha">Senha</label><input class="inp" id="senha" type="password" autocomplete="current-password" required></div>
       <p class="err" id="err" role="alert"></p>
       <button class="btn btn-y" type="submit" id="entrar">Entrar</button>
     </form>
@@ -46,29 +65,42 @@ td select { font: inherit; padding: 8px 10px; border-radius: 10px; background: v
 
   <section id="app" hidden>
     <div class="bar">
-      <div><h1>Leads</h1><p class="sub" id="contagem"></p></div>
-      <div><span class="muted" id="usuario"></span> <button class="btn btn-o" type="button" id="sair">Sair</button></div>
+      <div><h1>Pipeline de leads</h1><p class="sub" id="contagem"></p></div>
+      <div class="tools">
+        <input class="inp" id="busca" type="search" placeholder="Buscar nome, cidade, telefone...">
+        <label class="btn-s" for="arquivo">Importar planilha</label>
+        <input id="arquivo" type="file" accept=".xlsx,.xls,.csv" hidden>
+        <button class="btn-s" type="button" id="exportar">Exportar CSV</button>
+        <span class="muted" id="usuario"></span>
+        <button class="btn-s" type="button" id="sair">Sair</button>
+      </div>
     </div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>#</th><th>Nome</th><th>Cidade</th><th>Telefone</th><th>Instagram</th><th>Problema</th><th>Status</th></tr></thead>
-        <tbody id="linhas"></tbody>
-      </table>
-    </div>
-    <p class="err" id="erro-app" role="alert"></p>
+    <p class="ok" id="ok" role="status"></p>
+    <p class="err" id="erro" role="alert"></p>
+    <div class="board" id="board"></div>
   </section>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 (() => {
   const SUPABASE_URL = 'https://zvvoaxscemmjrsqpfxsx.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_By1V1tGjx-Tc_ocuDVl9Sg_99Ij7U8N';
-  const STATUS = ['Novo', 'Contato', 'Proposta', 'Fechado', 'Descartado'];
+  const COLS = [['Novo', 'Novo'], ['Contato', 'Em contato'], ['Proposta', 'Proposta'], ['Fechado', 'Fechado'], ['Descartado', 'Descartado']];
+  const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'status', 'problemas', 'oportunidade', 'notas'];
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const $ = (id) => document.getElementById(id);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  let leads = [];
+  let filtro = '';
+
+  function avisar(id, texto, erro) {
+    const el = $(id);
+    el.textContent = texto;
+    if (texto && !erro) setTimeout(() => { if (el.textContent === texto) el.textContent = ''; }, 4000);
+  }
 
   function mostrar(logado, email) {
     $('login').hidden = logado;
@@ -77,28 +109,174 @@ td select { font: inherit; padding: 8px 10px; border-radius: 10px; background: v
   }
 
   async function carregar() {
-    $('erro-app').textContent = '';
-    const { data, error } = await sb.from('leads').select('*').order('rank', { ascending: true });
-    if (error) { $('erro-app').textContent = 'Não foi possível carregar os leads: ' + error.message; return; }
-    $('contagem').textContent = data.length + ' leads';
-    $('linhas').innerHTML = data.map((l) => `
-      <tr>
-        <td>${esc(l.rank)}</td>
-        <td><strong>${esc(l.nome)}</strong><br><span class="muted">${esc(l.segmento)}</span></td>
-        <td>${esc(l.cidade)}${l.uf ? ' - ' + esc(l.uf) : ''}</td>
-        <td>${esc(l.telefone)}</td>
-        <td>${esc(l.instagram)}</td>
-        <td>${esc(l.problemas)}</td>
-        <td><select data-id="${esc(l.id)}">${STATUS.map((s) => `<option${s === l.status ? ' selected' : ''}>${s}</option>`).join('')}</select></td>
-      </tr>`).join('');
+    const { data, error } = await sb.from('leads').select('*').order('rank', { ascending: true }).limit(5000);
+    if (error) { avisar('erro', 'Não foi possível carregar os leads: ' + error.message, true); return; }
+    leads = data;
+    render();
   }
 
-  $('linhas').addEventListener('change', async (e) => {
-    if (!e.target.matches('select[data-id]')) return;
-    const { error } = await sb.from('leads').update({ status: e.target.value, updated_at: new Date().toISOString() }).eq('id', e.target.dataset.id);
-    $('erro-app').textContent = error ? 'Não foi possível salvar: ' + error.message : '';
+  function cardHtml(l) {
+    const local = [l.cidade, l.uf].filter(Boolean).join(' - ');
+    const score = l.score != null ? ' · score ' + esc(l.score) : '';
+    const prio = l.prioridade ? ' · ' + esc(l.prioridade) : '';
+    return `
+    <article class="card" draggable="true" data-id="${esc(l.id)}">
+      <h3>${esc(l.nome)}</h3>
+      ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
+      <p class="meta">${esc(local)}${prio}${score}</p>
+      ${l.telefone ? `<p class="meta">${esc(l.telefone)}</p>` : ''}
+      ${l.instagram ? `<p class="meta">${esc(l.instagram)}</p>` : ''}
+      ${l.problemas ? `<p class="prob">${esc(l.problemas)}</p>` : ''}
+      <details>
+        <summary>Detalhes e notas</summary>
+        ${l.oportunidade ? `<p>${esc(l.oportunidade)}</p>` : ''}
+        ${l.endereco ? `<p>${esc(l.endereco)}</p>` : ''}
+        <label class="meta">Notas
+          <textarea rows="3" data-notas="${esc(l.id)}">${esc(l.notas || '')}</textarea>
+        </label>
+      </details>
+      <label class="mover">Mover
+        <select data-mover="${esc(l.id)}">
+          ${COLS.map(([st, label]) => `<option value="${st}"${st === l.status ? ' selected' : ''}>${label}</option>`).join('')}
+        </select>
+      </label>
+    </article>`;
+  }
+
+  function render() {
+    const q = filtro.toLowerCase();
+    const visiveis = leads.filter((l) => !q || [l.nome, l.cidade, l.segmento, l.instagram, l.telefone].some((v) => String(v || '').toLowerCase().includes(q)));
+    $('board').innerHTML = COLS.map(([st, label]) => {
+      const itens = visiveis.filter((l) => l.status === st);
+      return `<section class="col" data-status="${st}">
+        <header class="col-h"><h2>${label}</h2><span class="count">${itens.length}</span></header>
+        <div class="drop">${itens.map(cardHtml).join('')}</div>
+      </section>`;
+    }).join('');
+    $('contagem').textContent = `${visiveis.length} de ${leads.length} leads`;
+  }
+
+  async function moverLead(id, status) {
+    const lead = leads.find((l) => String(l.id) === String(id));
+    if (!lead || lead.status === status) return;
+    const anterior = lead.status;
+    lead.status = status;
+    render();
+    const { error } = await sb.from('leads').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) { lead.status = anterior; render(); avisar('erro', 'Não foi possível mover: ' + error.message, true); }
+  }
+
+  async function salvarNotas(id, texto) {
+    const lead = leads.find((l) => String(l.id) === String(id));
+    if (!lead || (lead.notas || '') === texto) return;
+    lead.notas = texto;
+    const { error } = await sb.from('leads').update({ notas: texto, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) avisar('erro', 'Não foi possível salvar as notas: ' + error.message, true);
+    else avisar('ok', 'Notas salvas.');
+  }
+
+  // Eventos do quadro
+  $('board').addEventListener('change', (e) => {
+    if (e.target.matches('select[data-mover]')) moverLead(e.target.dataset.mover, e.target.value);
+  });
+  $('board').addEventListener('focusout', (e) => {
+    if (e.target.matches('textarea[data-notas]')) salvarNotas(e.target.dataset.notas, e.target.value);
+  });
+  $('board').addEventListener('dragstart', (e) => {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    e.dataTransfer.setData('text/plain', card.dataset.id);
+    e.dataTransfer.effectAllowed = 'move';
+    card.classList.add('arrastando');
+  });
+  $('board').addEventListener('dragend', (e) => {
+    const card = e.target.closest('.card');
+    if (card) card.classList.remove('arrastando');
+    document.querySelectorAll('.drop.over').forEach((d) => d.classList.remove('over'));
+  });
+  $('board').addEventListener('dragover', (e) => {
+    const drop = e.target.closest('.drop');
+    if (!drop) return;
+    e.preventDefault();
+    drop.classList.add('over');
+  });
+  $('board').addEventListener('dragleave', (e) => {
+    const drop = e.target.closest('.drop');
+    if (drop && !drop.contains(e.relatedTarget)) drop.classList.remove('over');
+  });
+  $('board').addEventListener('drop', (e) => {
+    const col = e.target.closest('.col');
+    if (!col) return;
+    e.preventDefault();
+    col.querySelector('.drop').classList.remove('over');
+    moverLead(e.dataTransfer.getData('text/plain'), col.dataset.status);
   });
 
+  $('busca').addEventListener('input', (e) => { filtro = e.target.value.trim(); render(); });
+
+  // Importação da planilha (aba LEADS)
+  const texto = (v) => (v === undefined || v === null) ? null : (String(v).trim() || null);
+  const numero = (v) => { if (v === undefined || v === null || v === '') return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
+  const inteiro = (v) => { const n = numero(v); return n === null ? null : Math.round(n); };
+
+  function mapear(r) {
+    return {
+      rank: inteiro(r['Rank']),
+      nome: texto(r['Nome comercial']),
+      profissional: texto(r['Profissional responsável']),
+      segmento: texto(r['Especialidade / segmento']),
+      cidade: texto(r['Cidade']),
+      uf: texto(r['UF']),
+      endereco: texto(r['Endereço (Google Maps)']),
+      telefone: texto(r['Telefone']),
+      instagram: texto(r['Instagram']),
+      nota: numero(r['Nota Google']),
+      avaliacoes: inteiro(r['Nº avaliações']),
+      problemas: texto(r['Problemas identificados']),
+      oportunidade: texto(r['Oportunidade comercial']),
+      prioridade: texto(r['Prioridade']),
+      score: inteiro(r['SCORE (0-100)']),
+      dados: r,
+    };
+  }
+
+  $('arquivo').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    avisar('ok', 'Lendo a planilha...');
+    try {
+      const wb = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+      const aba = wb.SheetNames.includes('LEADS') ? 'LEADS' : wb.SheetNames[0];
+      const linhas = XLSX.utils.sheet_to_json(wb.Sheets[aba], { defval: '' });
+      const porChave = new Map();
+      linhas.map(mapear).filter((r) => r.nome).forEach((r) => porChave.set((r.nome + '|' + (r.cidade || '')).toLowerCase(), r));
+      const registros = [...porChave.values()];
+      if (!registros.length) { avisar('erro', 'Nenhum lead encontrado na aba ' + aba + '.', true); return; }
+      for (let i = 0; i < registros.length; i += 200) {
+        const { error } = await sb.from('leads').upsert(registros.slice(i, i + 200), { onConflict: 'nome,cidade' });
+        if (error) { avisar('erro', 'Erro ao importar: ' + error.message, true); return; }
+      }
+      avisar('ok', registros.length + ' leads importados. Status e notas existentes foram mantidos.');
+      await carregar();
+    } catch (err) {
+      avisar('erro', 'Não foi possível ler o arquivo: ' + err.message, true);
+    }
+  });
+
+  // Exportação em CSV
+  $('exportar').addEventListener('click', () => {
+    const cel = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const linhas = [CAMPOS_CSV.join(';')].concat(leads.map((l) => CAMPOS_CSV.map((c) => cel(l[c])).join(';')));
+    const blob = new Blob(['﻿' + linhas.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'leads-sharp.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  // Login
   $('form-login').addEventListener('submit', async (e) => {
     e.preventDefault();
     $('err').textContent = '';
@@ -110,11 +288,9 @@ td select { font: inherit; padding: 8px 10px; border-radius: 10px; background: v
     mostrar(true, data.session.user.email);
   });
 
-  $('sair').addEventListener('click', async () => { await sb.auth.signOut(); mostrar(false); });
+  $('sair').addEventListener('click', async () => { await sb.auth.signOut(); leads = []; mostrar(false); });
 
-  sb.auth.getSession().then(({ data }) => {
-    if (data.session) mostrar(true, data.session.user.email); else mostrar(false);
-  });
+  sb.auth.getSession().then(({ data }) => mostrar(!!data.session, data.session?.user.email));
 })();
 </script>
 </body>
