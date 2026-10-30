@@ -26,25 +26,25 @@ textarea.inp { min-height: 88px; resize: vertical; }
 .btn-s:hover { border-color: var(--cyan); }
 .btn-d { border-color: #7a2b2b; color: #ffb4b4; }
 .btn-d.confirma { background: #7a2b2b; color: #fff; }
-.board { display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 82vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; align-items: start; }
-.col { background: var(--bg2); border: 1px solid var(--line); border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
-.col-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: min(340px, 84vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; align-items: start; }
+.col { background: #f3f5fc; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
+.col-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 16px; border-radius: 16px 16px 0 0; background: var(--c); color: var(--t); }
 .col-h h2 { font-size: 1rem; }
 .col-h .acoes { display: flex; align-items: center; gap: 8px; }
-.count { background: rgba(255,255,255,.08); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
-.icone { font: inherit; background: none; border: 1px solid var(--line); color: var(--mute); border-radius: 10px; width: 34px; height: 34px; cursor: pointer; }
-.icone:hover { color: var(--text); border-color: var(--cyan); }
+.count { background: rgba(255,255,255,.22); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
+.icone { font: inherit; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); color: inherit; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; }
+.icone:hover { background: rgba(255,255,255,.32); }
 .drop { display: grid; gap: 10px; padding: 10px; align-content: start; min-height: 120px; border-radius: 0 0 16px 16px; }
-.drop.over { background: rgba(92,200,240,.10); }
-.card { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
-.card:hover { border-color: var(--cyan); }
+.drop.over { background: rgba(47,107,255,.10); }
+.card { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
+.card:hover { border-color: #2f6bff; }
 .card.arrastando { opacity: .45; }
 .card-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
-.card h3 { font-size: 1rem; line-height: 1.25; }
-.score { flex: 0 0 auto; background: rgba(143,220,247,.15); color: var(--accent); border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
-.card .seg { color: var(--accent); font-size: .88rem; margin-top: 6px; }
-.card .meta { color: var(--mute); font-size: .85rem; margin-top: 4px; }
-.vazio { color: var(--mute); font-size: .9rem; padding: 8px 4px; }
+.card h3 { font-size: 1rem; line-height: 1.25; color: #0a1030; }
+.score { flex: 0 0 auto; background: #2f6bff; color: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
+.card .seg { color: #2f6bff; font-size: .88rem; margin-top: 6px; font-weight: 600; }
+.card .meta { color: #4a5478; font-size: .85rem; margin-top: 4px; }
+.vazio { color: #4a5478; font-size: .9rem; padding: 8px 4px; }
 dialog { background: var(--bg2); color: var(--text); border: 1px solid var(--line); border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); }
 dialog::backdrop { background: rgba(0,0,0,.6); }
 .dlg { display: flex; flex-direction: column; max-height: calc(100dvh - 40px); }
@@ -179,6 +179,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
   const numero = (v) => { if (v === '' || v == null) return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
   const texto = (v) => (v == null ? null : String(v).trim() || null);
 
+  const PALETA = [['#8fdcf7', '#0a1030'], ['#2f6bff', '#ffffff'], ['#0b2bb8', '#ffffff'], ['#5cc8f0', '#0a1030'], ['#4a5478', '#ffffff']];
   let colunas = [];
   let leads = [];
   let usuario = null;
@@ -232,7 +233,8 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
     $('board').innerHTML = grupos.map((g) => {
       const itens = visiveis.filter((l) => (g.id === 'none' ? l.coluna_id == null : l.coluna_id === g.id));
       const acoes = g.editavel ? `<button class="icone" type="button" data-editar-coluna="${esc(g.id)}" aria-label="Editar coluna ${esc(g.nome)}">✎</button>` : '';
-      return `<section class="col" data-col="${esc(g.id)}">
+      const cor = PALETA[(grupos.indexOf(g)) % PALETA.length];
+      return `<section class="col" data-col="${esc(g.id)}" style="--c:${cor[0]};--t:${cor[1]}">
         <header class="col-h"><h2>${esc(g.nome)}</h2><div class="acoes"><span class="count">${itens.length}</span>${acoes}</div></header>
         <div class="drop">${itens.length ? itens.map(cardHtml).join('') : '<p class="vazio">Arraste um lead para cá</p>'}</div>
       </section>`;
