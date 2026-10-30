@@ -87,6 +87,47 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 .link-zap[hidden] { display: none; }
 #dlg-chat { width: min(600px, calc(100vw - 32px)); }
 #dlg-chat .chat { max-height: 58vh; }
+
+.adm section { padding-block: 0; }
+.prio { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .85rem; margin-top: 8px; color: #0a1030; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 10px; }
+.dot.alta { background: #1b7f3a; }
+.dot.media { background: #d59b00; }
+.dot.baixa { background: #b42318; }
+.card-acoes { display: flex; justify-content: flex-end; margin-top: 12px; }
+.btn-chat { font: inherit; font-weight: 700; font-size: .85rem; padding: 7px 16px; border-radius: 999px; border: 0; background: #2f6bff; color: #fff; cursor: pointer; }
+.btn-chat:hover { background: #0b2bb8; }
+.link-zap { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; background: #1b7f3a; color: #fff; border-color: #1b7f3a; }
+.link-zap:hover { background: #156a2f; color: #fff; }
+.link-zap[hidden] { display: none; }
+#dlg-chat { width: min(600px, calc(100vw - 32px)); }
+#dlg-chat .chat { max-height: 58vh; }
+.btn-limpar { font: inherit; font-size: .85rem; font-weight: 700; margin-top: 12px; padding: 6px 12px; border-radius: 10px; border: 1px dashed #d8a5a0; background: transparent; color: #b42318; cursor: pointer; }
+.btn-limpar:hover { background: #fdecea; }
+.btn-d-forte { font: inherit; font-weight: 700; padding: 11px 20px; border-radius: 999px; border: 0; background: #b42318; color: #fff; cursor: pointer; min-height: 44px; }
+.tabs { display: flex; gap: 6px; padding: 12px 22px 0; border-bottom: 1px solid #dfe4f5; }
+.tab { font: inherit; font-weight: 700; padding: 10px 16px; border: 0; background: none; color: #4a5478; border-bottom: 3px solid transparent; cursor: pointer; }
+.tab.on { color: #2f6bff; border-bottom-color: #2f6bff; }
+.contato-acoes { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+.botoes { display: flex; gap: 10px; flex-wrap: wrap; }
+.link-maps { color: #2f6bff; font-weight: 700; text-decoration: underline; }
+.btn-zap, .btn-ig { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; padding: 10px 18px; border-radius: 999px; text-decoration: none; min-height: 44px; color: #fff; }
+.btn-zap { background: #1b7f3a; }
+.btn-zap:hover { background: #156a2f; }
+.btn-ig { background: #c13584; }
+.btn-ig:hover { background: #a02a6e; }
+[hidden] { display: none !important; }
+.secoes { display: grid; gap: 22px; }
+.sec h3 { font-size: .95rem; text-transform: uppercase; letter-spacing: .08em; color: #2f6bff; margin-bottom: 10px; }
+.destaque { background: #eaf2ff; border: 1px solid #b9d0ff; border-radius: 14px; padding: 12px 14px; }
+.destaque label { color: #0a1030; }
+.extras { display: grid; gap: 14px; }
+.extras div { display: grid; gap: 4px; padding-bottom: 12px; border-bottom: 1px solid #dfe4f5; }
+.extras dt { font-weight: 700; color: #4a5478; font-size: .85rem; }
+.extras dd { color: #0a1030; overflow-wrap: anywhere; }
+.extras a { color: #2f6bff; text-decoration: underline; }
+
+.adm section { padding-block: 0; }
 </style>
 
 </head>
@@ -110,7 +151,11 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 
   <section id="app" hidden>
     <div class="bar">
-      <div><h1>Pipeline de leads</h1><p class="sub" id="contagem"></p></div>
+      <div>
+        <h1>Pipeline de leads</h1>
+        <p class="sub" id="contagem"></p>
+        <button class="btn-limpar" type="button" id="zerar">Limpar todos os leads</button>
+      </div>
       <div class="tools">
         <input class="inp" id="busca" type="search" placeholder="Buscar empresa, ramo, cidade...">
         <button class="btn-s" type="button" id="nova-coluna">Nova coluna</button>
@@ -133,13 +178,26 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       <div><h2 id="lead-titulo"></h2><p class="sub" id="lead-sub"></p></div>
       <button class="icone" type="button" id="lead-fechar" aria-label="Fechar">✕</button>
     </div>
+    <div class="tabs" role="tablist">
+      <button class="tab on" type="button" data-tab="principal" role="tab">Principal</button>
+      <button class="tab" type="button" data-tab="extras" role="tab">Extras</button>
+    </div>
     <div class="dlg-b">
-      <form id="form-lead" class="grid2"></form>
+      <div id="painel-principal">
+        <div class="contato-acoes">
+          <a class="link-maps" id="lead-maps" href="#" target="_blank" rel="noopener" hidden>Abrir no Google Maps</a>
+          <div class="botoes">
+            <a class="btn-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
+            <a class="btn-ig" id="lead-ig" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
+          </div>
+        </div>
+        <form id="form-lead" class="secoes"></form>
+      </div>
+      <div id="painel-extras" hidden></div>
     </div>
     <div class="dlg-f">
       <button class="btn-s btn-d" type="button" id="lead-excluir">Excluir lead</button>
       <div class="grupo">
-        <a class="btn-s link-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
         <button class="btn-s" type="button" id="lead-cancelar">Cancelar</button>
         <button class="btn-p" type="button" id="lead-salvar">Salvar alterações</button>
       </div>
@@ -160,6 +218,18 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
         <input class="inp" id="msg-texto" type="text" maxlength="2000" placeholder="Escreva uma observação..." autocomplete="off">
         <button class="btn-p" type="submit">Enviar</button>
       </form>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlg-zerar">
+  <div class="dlg" style="padding:24px;gap:18px">
+    <h2 id="zerar-titulo" style="font-size:1.25rem">1 - Tem certeza?</h2>
+    <p class="sub" id="zerar-texto">Isso apaga todos os leads e as observações do chat. Não dá para desfazer.</p>
+    <p class="err" id="zerar-erro" role="alert"></p>
+    <div class="dlg-f" style="padding:0;border:0">
+      <button class="btn-s" type="button" id="zerar-nao">Não, cancelar</button>
+      <button class="btn-d-forte" type="button" id="zerar-sim">Sim</button>
     </div>
   </div>
 </dialog>
@@ -187,41 +257,70 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   const SUPABASE_KEY = 'sb_publishable_By1V1tGjx-Tc_ocuDVl9Sg_99Ij7U8N';
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const CAMPOS = [
-    ['nome', 'Nome comercial', 'text'],
-    ['profissional', 'Profissional responsável', 'text'],
-    ['segmento', 'Ramo', 'text'],
-    ['cidade', 'Cidade', 'text'],
-    ['uf', 'UF', 'text'],
-    ['endereco', 'Endereço', 'text'],
-    ['telefone', 'Telefone', 'text'],
-    ['instagram', 'Instagram', 'text'],
-    ['nota', 'Nota Google', 'number'],
-    ['avaliacoes', 'Nº avaliações', 'number'],
-    ['score', 'Score', 'number'],
-    ['prioridade', 'Prioridade', 'text'],
-    ['problemas', 'Problemas identificados', 'textarea', true],
-    ['oportunidade', 'Oportunidade comercial', 'textarea', true],
-  ];
-  const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
   const PALETA = [['#8fdcf7', '#0a1030'], ['#2f6bff', '#ffffff'], ['#0b2bb8', '#ffffff'], ['#5cc8f0', '#0a1030'], ['#4a5478', '#ffffff']];
+  const SECOES = [
+    { sec: 'Contato' },
+    { id: 'nome', key: 'nome', src: 'col', label: 'Nome comercial' },
+    { id: 'profissional', key: 'profissional', src: 'col', label: 'Profissional responsável' },
+    { id: 'segmento', key: 'segmento', src: 'col', label: 'Especialidade / segmento' },
+    { id: 'cidade', key: 'cidade', src: 'col', label: 'Cidade' },
+    { id: 'uf', key: 'uf', src: 'col', label: 'UF' },
+    { id: 'telefone', key: 'telefone', src: 'col', label: 'Telefone' },
+    { id: 'instagram', key: 'instagram', src: 'col', label: 'Instagram' },
+    { sec: 'Presença digital' },
+    { id: 'site', key: 'Possui site próprio?', src: 'dados', label: 'Possui site próprio?', tipo: 'textarea', cheio: true, destaque: true },
+    { id: 'qualidade', key: 'Qualidade da presença digital', src: 'dados', label: 'Qualidade da presença digital', tipo: 'textarea', cheio: true },
+    { id: 'canal', key: 'Melhor canal', src: 'dados', label: 'Melhor canal' },
+    { sec: 'Diagnóstico' },
+    { id: 'problemas', key: 'problemas', src: 'col', label: 'Problemas identificados', tipo: 'textarea', cheio: true },
+    { id: 'oportunidade', key: 'oportunidade', src: 'col', label: 'Oportunidade comercial', tipo: 'textarea', cheio: true },
+    { id: 'potencial', key: 'Potencial de investimento', src: 'dados', label: 'Potencial de investimento', tipo: 'textarea', cheio: true },
+    { id: 'score', key: 'score', src: 'col', label: 'SCORE (0-100)', tipo: 'number' },
+    { id: 'prioridade', key: 'prioridade', src: 'col', label: 'Prioridade' },
+    { sec: 'Mensagens' },
+    { id: 'msg1', key: 'Primeira mensagem', src: 'dados', label: 'Primeira mensagem', tipo: 'textarea', cheio: true },
+    { id: 'fu1', key: 'Follow-up 1 (3 dias)', src: 'dados', label: 'Follow-up 1 (3 dias)', tipo: 'textarea', cheio: true },
+    { id: 'fu2', key: 'Follow-up 2 (7 dias)', src: 'dados', label: 'Follow-up 2 (7 dias)', tipo: 'textarea', cheio: true },
+    { sec: 'Concorrência' },
+    { id: 'conc1', key: 'Concorrente 1', src: 'dados', label: 'Concorrente 1' },
+    { id: 'sitec1', key: 'Site concorrente 1', src: 'dados', label: 'Site concorrente 1' },
+    { id: 'conc2', key: 'Concorrente 2', src: 'dados', label: 'Concorrente 2' },
+    { id: 'sitec2', key: 'Site concorrente 2', src: 'dados', label: 'Site concorrente 2' },
+    { id: 'fontes', key: 'Fontes', src: 'dados', label: 'Fontes', tipo: 'textarea', cheio: true },
+  ];
+  const EXTRAS = [
+    ['Rank', 'col', 'rank'], ['Nicho', 'dados', 'Nicho'], ['Endereço', 'col', 'endereco'], ['Google Maps', 'col', 'maps', 'link'],
+    ['Nota', 'col', 'nota'], ['Avaliações', 'col', 'avaliacoes'], ['População (IBGE 2022)', 'dados', 'População (IBGE 2022)'],
+    ['Seguidores (nº)', 'dados', 'Seguidores (nº)'], ['Seguidores (obs.)', 'dados', 'Seguidores (obs.)'], ['E-mail público', 'dados', 'E-mail público'],
+    ['Link atual de contato', 'dados', 'Link atual de contato', 'link'], ["Link no 'Site' do Maps", 'dados', "Link no 'Site' do Maps", 'link'],
+    ['Gancho específico', 'dados', 'Gancho específico'], ['CTA', 'dados', 'CTA'],
+    ['Pts Reputação (0-15)', 'dados', 'Pts Reputação (0-15)'], ['Pts Avaliações (0-20)', 'dados', 'Pts Avaliações (0-20)'],
+    ['Pts Instagram (0-15)', 'dados', 'Pts Instagram (0-15)'], ['Pts Ausência de site (0-15)', 'dados', 'Pts Ausência de site (0-15)'],
+    ['Pts Estrutura (0-10)', 'dados', 'Pts Estrutura (0-10)'], ['Pts Oportunidade (0-15)', 'dados', 'Pts Oportunidade (0-15)'],
+    ['Pts Capacidade (0-10)', 'dados', 'Pts Capacidade (0-10)'],
+  ];
   const MAPA = {
     rank: 'Rank', nome: 'Nome comercial', profissional: 'Profissional responsável', segmento: 'Especialidade / segmento',
-    cidade: 'Cidade', uf: 'UF', endereco: 'Endereço (Google Maps)', telefone: 'Telefone', instagram: 'Instagram',
-    nota: 'Nota Google', avaliacoes: 'Nº avaliações', problemas: 'Problemas identificados',
-    oportunidade: 'Oportunidade comercial', prioridade: 'Prioridade', score: 'SCORE (0-100)',
+    cidade: 'Cidade', uf: 'UF', endereco: 'Endereço', telefone: 'Telefone', instagram: 'Instagram', nota: 'Nota',
+    avaliacoes: 'Avaliações', problemas: 'Problemas identificados', oportunidade: 'Oportunidade comercial',
+    prioridade: 'Prioridade', score: 'SCORE (0-100)',
   };
+  const CSV_COLS = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
 
   const $ = (id) => document.getElementById(id);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const numero = (v) => { if (v === '' || v == null) return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
   const texto = (v) => (v == null ? null : String(v).trim() || null);
-  // Telefone brasileiro vira link wa.me, ex.: (11) 98484-7000 -> https://wa.me/5511984847000
-  function waLink(tel) {
-    let d = String(tel || '').replace(/\D/g, '');
-    if (!d) return '#';
+  const dig = (tel) => String(tel || '').replace(/\D/g, '');
+  function waLink(tel, msg) {
+    let d = dig(tel);
+    if (!d) return null;
     if (!d.startsWith('55')) d = '55' + d;
-    return 'https://wa.me/' + d;
+    return 'https://wa.me/' + d + (msg ? '?text=' + encodeURIComponent(msg) : '');
+  }
+  function igLink(h) {
+    const u = String(h || '').trim().replace(/^@/, '');
+    return u ? 'https://instagram.com/' + u : null;
   }
   function prioHtml(p) {
     if (!p) return '';
@@ -229,6 +328,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     const cls = k.startsWith('alt') ? 'alta' : k.startsWith('bai') ? 'baixa' : 'media';
     return `<p class="prio"><span class="dot ${cls}"></span>${esc(p)}</p>`;
   }
+  const valorDe = (l, spec) => (spec.src === 'col' ? l[spec.key] : (l.dados || {})[spec.key]) ?? '';
 
   let colunas = [];
   let leads = [];
@@ -348,20 +448,64 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   $('busca').addEventListener('input', (e) => { filtro = e.target.value.trim(); render(); });
 
   // ----- Pop-up do lead -----
-  function formHtml(l) {
-    return CAMPOS.map(([nome, rotulo, tipo, cheio]) => {
-      const valor = l[nome] ?? '';
-      const campo = tipo === 'textarea'
-        ? `<textarea class="inp" name="${nome}" rows="3">${esc(valor)}</textarea>`
-        : `<input class="inp" name="${nome}" type="${tipo}" value="${esc(valor)}"${tipo === 'number' ? ' step="any"' : ''}>`;
-      return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}</label>`;
-    }).join('');
+  function campoHtml(spec, valor) {
+    const cls = spec.cheio ? ' full' : '';
+    const dest = spec.destaque ? ' destaque' : '';
+    let campo;
+    if (spec.tipo === 'textarea') campo = `<textarea class="inp" name="${spec.id}" rows="3">${esc(valor)}</textarea>`;
+    else campo = `<input class="inp" name="${spec.id}" type="${spec.tipo === 'number' ? 'number' : 'text'}"${spec.tipo === 'number' ? ' step="any"' : ''} value="${esc(valor)}">`;
+    return `<label class="fl${cls}${dest}">${spec.label}${campo}</label>`;
   }
 
-  function atualizarWa(tel) {
-    const a = $('lead-wa');
-    a.hidden = !tel;
-    a.href = tel ? waLink(tel) : '#';
+  function montarPrincipal(l) {
+    let html = '', aberta = false, grade = '';
+    const fecha = () => { if (grade) { html += `<div class="grid2">${grade}</div>`; grade = ''; } };
+    SECOES.forEach((spec) => {
+      if (spec.sec) {
+        fecha();
+        if (aberta) html += '</div>';
+        html += `<div class="sec"><h3>${spec.sec}</h3>`;
+        aberta = true;
+      } else {
+        grade += campoHtml(spec, valorDe(l, spec));
+        if (spec.cheio || spec.tipo === 'textarea') { fecha(); }
+      }
+    });
+    fecha();
+    if (aberta) html += '</div>';
+    return html;
+  }
+
+  function montarExtras(l) {
+    const itens = EXTRAS.map(([rotulo, src, chave, tipo]) => {
+      const v = src === 'col' ? l[chave] : (l.dados || {})[chave];
+      if (v == null || v === '') return '';
+      const val = tipo === 'link' && /^https?:/.test(String(v))
+        ? `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`
+        : esc(v);
+      return `<div><dt>${esc(rotulo)}</dt><dd>${val}</dd></div>`;
+    }).filter(Boolean).join('');
+    return `<dl class="extras">${itens || '<p class="vazio">Sem informações extras.</p>'}</dl>`;
+  }
+
+  function atualizarBotoes() {
+    const f = $('form-lead');
+    const tel = f.elements.telefone ? f.elements.telefone.value : '';
+    const msg = f.elements.msg1 ? f.elements.msg1.value.trim() : '';
+    const ig = f.elements.instagram ? f.elements.instagram.value : '';
+    const wa = waLink(tel, msg);
+    $('lead-wa').hidden = !wa;
+    if (wa) $('lead-wa').href = wa;
+    const iu = igLink(ig);
+    $('lead-ig').hidden = !iu;
+    if (iu) $('lead-ig').href = iu;
+  }
+
+  function atualizarMapa(l) {
+    const a = $('lead-maps');
+    a.hidden = !l.maps;
+    if (l.maps) a.href = l.maps;
+    a.textContent = [l.cidade, l.uf].filter(Boolean).join(' - ') + ' · Abrir no Google Maps';
   }
 
   function abrirLead(id) {
@@ -370,15 +514,25 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     leadAberto = l.id;
     $('lead-titulo').textContent = l.nome;
     $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
-    $('form-lead').innerHTML = formHtml(l);
-    atualizarWa(l.telefone);
+    $('form-lead').innerHTML = montarPrincipal(l);
+    $('painel-extras').innerHTML = montarExtras(l);
+    atualizarMapa(l);
+    atualizarBotoes();
+    trocarAba('principal');
     $('lead-erro').textContent = '';
     resetarExclusao();
     $('dlg-lead').showModal();
   }
 
+  function trocarAba(nome) {
+    document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t.dataset.tab === nome));
+    $('painel-principal').hidden = nome !== 'principal';
+    $('painel-extras').hidden = nome !== 'extras';
+  }
+  document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => trocarAba(t.dataset.tab)));
+
   $('form-lead').addEventListener('input', (e) => {
-    if (e.target.name === 'telefone') atualizarWa(e.target.value.trim());
+    if (['telefone', 'msg1', 'instagram'].includes(e.target.name)) atualizarBotoes();
   });
 
   function fecharLead() { leadAberto = null; $('dlg-lead').close(); }
@@ -390,20 +544,26 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     const l = leads.find((x) => String(x.id) === String(leadAberto));
     if (!l) return;
     const f = $('form-lead');
-    const dados = {};
-    CAMPOS.forEach(([nome, , tipo]) => {
-      const v = f.elements[nome].value;
-      dados[nome] = tipo === 'number' ? numero(v) : texto(v);
+    const cols = {};
+    const dados = { ...(l.dados || {}) };
+    SECOES.forEach((spec) => {
+      if (spec.sec) return;
+      const el = f.elements[spec.id];
+      if (!el) return;
+      if (spec.src === 'col') cols[spec.key] = spec.tipo === 'number' ? numero(el.value) : texto(el.value);
+      else dados[spec.key] = texto(el.value) ?? '';
     });
-    if (!dados.nome) { $('lead-erro').textContent = 'O nome comercial é obrigatório.'; return; }
+    if (!cols.nome) { $('lead-erro').textContent = 'O nome comercial é obrigatório.'; return; }
     $('lead-salvar').disabled = true;
-    const { error } = await sb.from('leads').update({ ...dados, updated_at: new Date().toISOString() }).eq('id', l.id);
+    const { error } = await sb.from('leads').update({ ...cols, dados, updated_at: new Date().toISOString() }).eq('id', l.id);
     $('lead-salvar').disabled = false;
     if (error) { $('lead-erro').textContent = 'Não foi possível salvar: ' + error.message; return; }
-    Object.assign(l, dados);
+    Object.assign(l, cols);
+    l.dados = dados;
     render();
     $('lead-titulo').textContent = l.nome;
     $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    $('painel-extras').innerHTML = montarExtras(l);
     avisar('ok', 'Alterações salvas.');
   });
 
@@ -427,6 +587,36 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     fecharLead();
     render();
     avisar('ok', 'Lead excluído.');
+  });
+
+  // ----- Limpar tudo (confirmação em dois passos) -----
+  let passoZerar = 1;
+  $('zerar').addEventListener('click', () => {
+    passoZerar = 1;
+    $('zerar-titulo').textContent = '1 - Tem certeza?';
+    $('zerar-texto').textContent = 'Isso apaga todos os leads e as observações do chat. Não dá para desfazer.';
+    $('zerar-sim').textContent = 'Sim';
+    $('zerar-erro').textContent = '';
+    $('dlg-zerar').showModal();
+  });
+  $('zerar-nao').addEventListener('click', () => $('dlg-zerar').close());
+  $('zerar-sim').addEventListener('click', async () => {
+    if (passoZerar === 1) {
+      passoZerar = 2;
+      $('zerar-titulo').textContent = '2 - Absoluta?';
+      $('zerar-texto').textContent = 'Última confirmação: todos os leads, colunas de cards e observações serão apagados.';
+      $('zerar-sim').textContent = 'Sim, apagar tudo';
+      return;
+    }
+    $('zerar-sim').disabled = true;
+    const { error } = await sb.from('leads').delete().gt('id', 0);
+    $('zerar-sim').disabled = false;
+    if (error) { $('zerar-erro').textContent = 'Não foi possível apagar: ' + error.message; return; }
+    leads = [];
+    $('dlg-zerar').close();
+    fecharChat();
+    render();
+    avisar('ok', 'Todos os leads foram apagados.');
   });
 
   // ----- Chat de observações -----
@@ -538,13 +728,39 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     avisar('ok', 'Coluna excluída. Os leads dela ficaram em "Sem coluna".');
   });
 
-  // ----- Importação da planilha (aba LEADS) -----
+  // ----- Importação (trouxa.xlsx ou planilha de leads) -----
+  // Lê a planilha célula a célula: guarda todas as colunas e o link do Google Maps (hiperlink).
+  function lerLinhas(ws) {
+    const faixa = XLSX.utils.decode_range(ws['!ref']);
+    const cabecalho = {};
+    for (let c = faixa.s.c; c <= faixa.e.c; c++) {
+      const cel = ws[XLSX.utils.encode_cell({ r: faixa.s.r, c })];
+      if (cel && cel.v !== undefined) cabecalho[c] = String(cel.v).trim();
+    }
+    const linhas = [];
+    for (let r = faixa.s.r + 1; r <= faixa.e.r; r++) {
+      const dados = {};
+      let maps = null;
+      Object.entries(cabecalho).forEach(([c, nome]) => {
+        const cel = ws[XLSX.utils.encode_cell({ r, c: Number(c) })];
+        dados[nome] = cel && cel.v !== undefined ? String(cel.v) : '';
+        if (/maps/i.test(nome) && cel && cel.l && cel.l.Target) maps = cel.l.Target;
+      });
+      if (Object.values(dados).some((v) => v !== '')) { dados.__maps = maps; linhas.push(dados); }
+    }
+    return linhas;
+  }
+
   function mapear(r) {
-    const o = { dados: r };
+    const o = { dados: { ...r } };
+    delete o.dados.__maps;
     for (const [campo, coluna] of Object.entries(MAPA)) {
       const v = r[coluna];
-      o[campo] = ['rank', 'avaliacoes', 'score'].includes(campo) ? (numero(v) == null ? null : Math.round(numero(v))) : (campo === 'nota' ? numero(v) : texto(v));
+      if (['rank', 'avaliacoes', 'score'].includes(campo)) o[campo] = numero(v) == null ? null : Math.round(numero(v));
+      else if (campo === 'nota') o[campo] = numero(v);
+      else o[campo] = texto(v);
     }
+    o.maps = r.__maps || null;
     return o;
   }
 
@@ -554,9 +770,9 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     if (!file) return;
     avisar('ok', 'Lendo a planilha...');
     try {
-      const wb = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+      const wb = XLSX.read(await file.arrayBuffer(), { type: 'array', cellDates: false });
       const aba = wb.SheetNames.includes('LEADS') ? 'LEADS' : wb.SheetNames[0];
-      const linhas = XLSX.utils.sheet_to_json(wb.Sheets[aba], { defval: '' });
+      const linhas = lerLinhas(wb.Sheets[aba]);
       const porChave = new Map();
       linhas.map(mapear).filter((r) => r.nome).forEach((r) => porChave.set((r.nome + '|' + (r.cidade || '')).toLowerCase(), r));
       const registros = [...porChave.values()];
@@ -565,7 +781,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
         const { error } = await sb.from('leads').upsert(registros.slice(i, i + 200), { onConflict: 'nome,cidade' });
         if (error) { avisar('erro', 'Erro ao importar: ' + error.message, true); return; }
       }
-      avisar('ok', registros.length + ' leads importados. Colunas, notas e observações foram mantidas.');
+      avisar('ok', registros.length + ' leads importados. Colunas, status e observações foram mantidos.');
       await carregar();
     } catch (err) {
       avisar('erro', 'Não foi possível ler o arquivo: ' + err.message, true);
@@ -576,8 +792,8 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   $('exportar').addEventListener('click', () => {
     const cel = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
     const nomeColuna = (id) => (colunas.find((c) => c.id === id) || {}).nome || '';
-    const cab = [...CAMPOS_CSV, 'coluna'];
-    const linhas = [cab.join(';')].concat(leads.map((l) => [...CAMPOS_CSV.map((c) => l[c]), nomeColuna(l.coluna_id)].map(cel).join(';')));
+    const cab = [...CSV_COLS, 'coluna'];
+    const linhas = [cab.join(';')].concat(leads.map((l) => [...CSV_COLS.map((c) => l[c]), nomeColuna(l.coluna_id)].map(cel).join(';')));
     const blob = new Blob(['﻿' + linhas.join('\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
