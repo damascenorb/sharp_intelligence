@@ -111,10 +111,12 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
 .contato-acoes { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
 .botoes { display: flex; gap: 10px; flex-wrap: wrap; }
 .link-maps { color: #2f6bff; font-weight: 700; text-decoration: underline; }
-.btn-zap, .btn-ig { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; padding: 10px 18px; border-radius: 999px; text-decoration: none; min-height: 44px; color: #fff; }
+.btn-zap, .btn-ig, .btn-maps { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; padding: 10px 18px; border-radius: 999px; text-decoration: none; min-height: 44px; color: #fff; }
 .btn-zap { background: #1b7f3a; }
 .btn-zap:hover { background: #156a2f; }
 .btn-ig { background: #c13584; }
+.btn-maps { background: #2f6bff; }
+.btn-maps:hover { background: #0b2bb8; }
 .btn-ig:hover { background: #a02a6e; }
 [hidden] { display: none !important; }
 .secoes { display: grid; gap: 22px; }
@@ -185,10 +187,10 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     <div class="dlg-b">
       <div id="painel-principal">
         <div class="contato-acoes">
-          <a class="link-maps" id="lead-maps" href="#" target="_blank" rel="noopener" hidden>Abrir no Google Maps</a>
           <div class="botoes">
             <a class="btn-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
             <a class="btn-ig" id="lead-ig" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
+            <a class="btn-maps" id="lead-maps" href="#" target="_blank" rel="noopener" hidden>Maps</a>
           </div>
         </div>
         <form id="form-lead" class="secoes"></form>
@@ -262,6 +264,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     { sec: 'Contato' },
     { id: 'nome', key: 'nome', src: 'col', label: 'Nome comercial' },
     { id: 'profissional', key: 'profissional', src: 'col', label: 'Profissional responsável' },
+    { id: 'nicho', key: 'Nicho', src: 'dados', label: 'Nicho' },
     { id: 'segmento', key: 'segmento', src: 'col', label: 'Especialidade / segmento' },
     { id: 'cidade', key: 'cidade', src: 'col', label: 'Cidade' },
     { id: 'uf', key: 'uf', src: 'col', label: 'UF' },
@@ -289,7 +292,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     { id: 'fontes', key: 'Fontes', src: 'dados', label: 'Fontes', tipo: 'textarea', cheio: true },
   ];
   const EXTRAS = [
-    ['Rank', 'col', 'rank'], ['Nicho', 'dados', 'Nicho'], ['Endereço', 'col', 'endereco'], ['Google Maps', 'col', 'maps', 'link'],
+    ['Rank', 'col', 'rank'], ['Nicho', 'dados', 'Nicho'], ['Endereço', 'col', 'endereco'], 
     ['Nota', 'col', 'nota'], ['Avaliações', 'col', 'avaliacoes'], ['População (IBGE 2022)', 'dados', 'População (IBGE 2022)'],
     ['Seguidores (nº)', 'dados', 'Seguidores (nº)'], ['Seguidores (obs.)', 'dados', 'Seguidores (obs.)'], ['E-mail público', 'dados', 'E-mail público'],
     ['Link atual de contato', 'dados', 'Link atual de contato', 'link'], ["Link no 'Site' do Maps", 'dados', "Link no 'Site' do Maps", 'link'],
@@ -505,7 +508,6 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
     const a = $('lead-maps');
     a.hidden = !l.maps;
     if (l.maps) a.href = l.maps;
-    a.textContent = [l.cidade, l.uf].filter(Boolean).join(' - ') + ' · Abrir no Google Maps';
   }
 
   function abrirLead(id) {
