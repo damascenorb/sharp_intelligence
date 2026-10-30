@@ -50,8 +50,8 @@ textarea.inp { min-height: 88px; resize: vertical; }
 .score { flex: 0 0 auto; background: #2f6bff; color: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
 .card .seg { color: #2f6bff; font-size: .88rem; margin-top: 6px; font-weight: 600; }
 .card .meta { color: #4a5478; font-size: .85rem; margin-top: 4px; }
-.wa { color: #1b7f3a; font-weight: 700; text-decoration: none; }
-.wa:hover { text-decoration: underline; }
+.link-wa { color: #1b7f3a; font-weight: 700; text-decoration: none; }
+.link-wa:hover { text-decoration: underline; }
 .vazio { color: #4a5478; font-size: .9rem; padding: 8px 4px; }
 dialog { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); box-shadow: 0 30px 80px rgba(10,16,48,.25); }
 dialog::backdrop { background: rgba(10,16,48,.45); }
@@ -238,7 +238,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
       ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
       ${local ? `<p class="meta">${esc(local)}</p>` : ''}
-      ${l.telefone ? `<p class="meta"><a class="wa" href="${waLink(l.telefone)}" target="_blank" rel="noopener">WhatsApp ${esc(l.telefone)}</a></p>` : ''}
+      ${l.telefone ? `<p class="meta"><a class="link-wa" href="${waLink(l.telefone)}" target="_blank" rel="noopener">WhatsApp ${esc(l.telefone)}</a></p>` : ''}
     </article>`;
   }
 
@@ -316,7 +316,7 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
       const campo = tipo === 'textarea'
         ? `<textarea class="inp" name="${nome}" rows="3">${esc(valor)}</textarea>`
         : `<input class="inp" name="${nome}" type="${tipo}" value="${esc(valor)}"${tipo === 'number' ? ' step="any"' : ''}>`;
-      const extra = nome === 'telefone' ? `<a class="wa" data-wa-link href="${waLink(valor)}" target="_blank" rel="noopener">Abrir no WhatsApp</a>` : '';
+      const extra = nome === 'telefone' ? `<a class="link-wa" data-wa-link href="${waLink(valor)}" target="_blank" rel="noopener">Abrir no WhatsApp</a>` : '';
       return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}${extra}</label>`;
     }).join('');
   }
