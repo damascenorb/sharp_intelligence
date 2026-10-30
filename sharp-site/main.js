@@ -51,7 +51,7 @@
   }
   const rail = document.querySelector('.rail-wrap .rail');
   if (rail) {
-    const thumb = document.querySelector('.bar i');
+    const thumb = document.querySelector('.rail-bar i');
     const upd = () => { const max = rail.scrollWidth - rail.clientWidth, w = rail.clientWidth / rail.scrollWidth * 100; thumb.style.width = w + '%'; thumb.style.left = (max ? rail.scrollLeft / max * (100 - w) : 0) + '%'; };
     rail.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
   }

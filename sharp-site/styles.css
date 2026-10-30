@@ -433,8 +433,8 @@ section { padding-block: clamp(64px, 9vw, 120px); }
   .rail li { flex: 0 0 62%; scroll-snap-align: start; }
   .rail-wrap { margin-inline: calc(var(--g) * -1); }
   .rail-wrap .rail { margin-inline: 0; padding-inline: var(--g); }
-  .bar { display: block; position: relative; height: 3px; margin: 4px var(--g) 0; border-radius: 3px; background: rgba(255,255,255,.14); }
-  .bar i { position: absolute; top: 0; left: 0; height: 100%; width: 40%; border-radius: 3px; background: var(--accent); }
+  .rail-bar { display: block; position: relative; height: 3px; margin: 4px var(--g) 0; border-radius: 3px; background: rgba(255,255,255,.14); }
+  .rail-bar i { position: absolute; top: 0; left: 0; height: 100%; width: 40%; border-radius: 3px; background: var(--accent); }
   .cols { grid-template-columns: 1fr 1fr; gap: 22px 14px; }
   .cols h3 { font-size: 1.05rem; }
   .cols p { font-size: .92rem; }
