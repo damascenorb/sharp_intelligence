@@ -172,7 +172,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
     ['problemas', 'Problemas identificados', 'textarea', true],
     ['oportunidade', 'Oportunidade comercial', 'textarea', true],
   ];
-  const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemproblemas', 'oportunidade'];
+  const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
 
   const $ = (id) => document.getElementById(id);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
