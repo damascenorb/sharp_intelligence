@@ -166,6 +166,37 @@ dialog::backdrop { background: rgba(10,16,48,.45); }
   .grid2 { grid-template-columns: 1fr; }
   .inp { font-size: 16px; }
 }
+
+/* ----- Pop-up compacto no celular ----- */
+@media (max-width: 760px) {
+  dialog { font-size: 14px; }
+  .dlg-h { padding: 14px 14px 10px; }
+  .dlg-h h2 { font-size: 1.1rem; line-height: 1.2; }
+  .dlg-h .sub { font-size: .85rem; margin-top: 2px; }
+  .contato-acoes { margin-bottom: 10px; }
+  .botoes a { min-height: 38px; font-size: .85rem; padding: 8px 10px; }
+  .tabs { flex-wrap: wrap; overflow: visible; gap: 0; padding: 0 8px; border-bottom: 1px solid #dfe4f5; }
+  .tab { flex: 1 1 auto; padding: 9px 6px; font-size: .8rem; text-align: center; border-bottom-width: 2px; }
+  .dlg-b { padding: 12px 14px; gap: 14px; }
+  .sec h3 { font-size: .78rem; margin-bottom: 6px; }
+  .fl { font-size: .8rem; gap: 4px; }
+  .inp { padding: 8px 10px; min-height: 40px; font-size: 16px; border-radius: 10px; }
+  textarea.inp { min-height: 64px; }
+  .grid2 { gap: 8px; }
+  .msg { max-width: 92%; padding: 8px 10px; font-size: .85rem; }
+  .msg small { font-size: .7rem; }
+  .chat { max-height: 52vh; }
+  .dlg-f { padding: 10px 14px; gap: 8px; }
+  .dlg-f .btn-p, .dlg-f .btn-s { min-height: 40px; font-size: .9rem; padding: 8px 14px; }
+  .extras dt { font-size: .78rem; }
+  .extras dd { font-size: .88rem; }
+  .destaque { padding: 8px 10px; }
+  .lead-card { padding: 10px; }
+  .lead-card h3 { font-size: .9rem; }
+  .prio, .lead-card .seg, .lead-card .meta { font-size: .78rem; margin-top: 4px; }
+  .nicho { font-size: .7rem; margin-top: 4px; }
+  .btn-chat { padding: 5px 12px; font-size: .78rem; }
+}
 </style>
 
 </head>
