@@ -11,38 +11,60 @@
 <style>
 .adm { padding-block: 40px 80px; }
 .adm h1 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem); }
-.sub { color: var(--mute); margin-top: 6px; }
-.muted { color: var(--mute); }
+.sub, .muted { color: var(--mute); }
 .box { background: var(--bg2); border: 1px solid var(--line); border-radius: 18px; padding: 24px; max-width: 420px; }
 .field { display: grid; gap: 6px; margin-bottom: 16px; }
-.field label { font-weight: 700; font-size: .95rem; }
-.inp { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-height: 44px; width: 100%; }
+.field label, .lbl { font-weight: 700; font-size: .9rem; }
+.inp { font: inherit; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-height: 44px; width: 100%; }
+textarea.inp { min-height: 88px; resize: vertical; }
 .err { color: #ff9b9b; min-height: 1.4em; margin-bottom: 8px; }
+.ok { color: #9be7a8; min-height: 1.4em; margin-top: 8px; }
 .bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; justify-content: space-between; margin-bottom: 20px; }
 .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.tools .inp { width: 240px; }
+.tools .inp { width: 230px; }
 .btn-s { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); cursor: pointer; min-height: 44px; }
 .btn-s:hover { border-color: var(--cyan); }
-.board { display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 82vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; }
+.btn-d { border-color: #7a2b2b; color: #ffb4b4; }
+.btn-d.confirma { background: #7a2b2b; color: #fff; }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 82vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; align-items: start; }
 .col { background: var(--bg2); border: 1px solid var(--line); border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
-.col-h { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.col-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
 .col-h h2 { font-size: 1rem; }
+.col-h .acoes { display: flex; align-items: center; gap: 8px; }
 .count { background: rgba(255,255,255,.08); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
-.drop { display: grid; gap: 10px; padding: 10px; align-content: start; flex: 1; min-height: 120px; border-radius: 0 0 16px 16px; }
+.icone { font: inherit; background: none; border: 1px solid var(--line); color: var(--mute); border-radius: 10px; width: 34px; height: 34px; cursor: pointer; }
+.icone:hover { color: var(--text); border-color: var(--cyan); }
+.drop { display: grid; gap: 10px; padding: 10px; align-content: start; min-height: 120px; border-radius: 0 0 16px 16px; }
 .drop.over { background: rgba(92,200,240,.10); }
-.card { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; font-size: .9rem; cursor: grab; min-width: 0; overflow-wrap: anywhere; }
+.card { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
+.card:hover { border-color: var(--cyan); }
 .card.arrastando { opacity: .45; }
-.card h3 { font-size: 1rem; margin-bottom: 2px; }
-.card .seg { color: var(--accent); font-size: .85rem; }
+.card-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+.card h3 { font-size: 1rem; line-height: 1.25; }
+.score { flex: 0 0 auto; background: rgba(143,220,247,.15); color: var(--accent); border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
+.card .seg { color: var(--accent); font-size: .88rem; margin-top: 6px; }
 .card .meta { color: var(--mute); font-size: .85rem; margin-top: 4px; }
-.card .prob { color: var(--mute); margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.card details { margin-top: 10px; }
-.card summary { cursor: pointer; color: var(--accent); font-weight: 700; font-size: .85rem; }
-.card details p { margin-top: 8px; color: var(--mute); }
-.card textarea { width: 100%; margin-top: 6px; font: inherit; font-size: .88rem; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--text); resize: vertical; }
-.mover { display: flex; gap: 8px; align-items: center; margin-top: 12px; font-size: .85rem; color: var(--mute); }
-.mover select { font: inherit; padding: 6px 8px; border-radius: 10px; background: var(--bg2); color: var(--text); border: 1px solid var(--line); flex: 1; }
-.ok { color: #9be7a8; min-height: 1.4em; margin-top: 8px; }
+.vazio { color: var(--mute); font-size: .9rem; padding: 8px 4px; }
+dialog { background: var(--bg2); color: var(--text); border: 1px solid var(--line); border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); }
+dialog::backdrop { background: rgba(0,0,0,.6); }
+.dlg { display: flex; flex-direction: column; max-height: calc(100dvh - 40px); }
+.dlg-h { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+.dlg-h h2 { font-size: 1.3rem; }
+.dlg-b { overflow-y: auto; padding: 20px 22px; display: grid; gap: 22px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+.grid2 .full { grid-column: 1 / -1; }
+.fl { display: grid; gap: 6px; font-size: .85rem; font-weight: 700; }
+.chat { display: grid; gap: 10px; max-height: 280px; overflow-y: auto; padding: 4px; }
+.msg { max-width: 85%; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.msg.eu { justify-self: end; background: rgba(47,107,255,.18); border-color: rgba(47,107,255,.4); }
+.msg small { display: block; color: var(--mute); font-size: .75rem; margin-bottom: 4px; }
+.msg p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.envio { display: flex; gap: 10px; }
+.envio .inp { flex: 1; }
+.dlg-f { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 16px 22px; border-top: 1px solid var(--line); }
+.dlg-f .grupo { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-y { cursor: pointer; }
+@media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -67,7 +89,8 @@
     <div class="bar">
       <div><h1>Pipeline de leads</h1><p class="sub" id="contagem"></p></div>
       <div class="tools">
-        <input class="inp" id="busca" type="search" placeholder="Buscar nome, cidade, telefone...">
+        <input class="inp" id="busca" type="search" placeholder="Buscar empresa, ramo, cidade...">
+        <button class="btn-s" type="button" id="nova-coluna">Nova coluna</button>
         <label class="btn-s" for="arquivo">Importar planilha</label>
         <input id="arquivo" type="file" accept=".xlsx,.xls,.csv" hidden>
         <button class="btn-s" type="button" id="exportar">Exportar CSV</button>
@@ -81,25 +104,91 @@
   </section>
 </main>
 
+<dialog id="dlg-lead">
+  <div class="dlg">
+    <div class="dlg-h">
+      <div><h2 id="lead-titulo"></h2><p class="sub" id="lead-sub"></p></div>
+      <button class="icone" type="button" id="lead-fechar" aria-label="Fechar">✕</button>
+    </div>
+    <div class="dlg-b">
+      <form id="form-lead" class="grid2"></form>
+      <div>
+        <p class="lbl">Observações</p>
+        <div class="chat" id="chat"></div>
+        <form class="envio" id="form-msg">
+          <input class="inp" id="msg-texto" type="text" maxlength="2000" placeholder="Escreva uma observação..." autocomplete="off">
+          <button class="btn btn-y" type="submit">Enviar</button>
+        </form>
+      </div>
+    </div>
+    <div class="dlg-f">
+      <button class="btn-s btn-d" type="button" id="lead-excluir">Excluir lead</button>
+      <div class="grupo">
+        <button class="btn-s" type="button" id="lead-cancelar">Cancelar</button>
+        <button class="btn btn-y" type="button" id="lead-salvar">Salvar alterações</button>
+      </div>
+    </div>
+    <p class="err" id="lead-erro" role="alert" style="padding:0 22px 14px"></p>
+  </div>
+</dialog>
+
+<dialog id="dlg-coluna">
+  <form method="dialog" class="dlg" id="form-coluna" style="padding:22px;gap:16px">
+    <h2 id="coluna-titulo" style="font-size:1.2rem">Nova coluna</h2>
+    <label class="fl">Nome da coluna<input class="inp" id="coluna-nome" type="text" maxlength="40" required></label>
+    <p class="err" id="coluna-erro" role="alert"></p>
+    <div class="dlg-f" style="padding:0;border:0">
+      <button class="btn-s btn-d" type="button" id="coluna-excluir" hidden>Excluir coluna</button>
+      <div class="grupo">
+        <button class="btn-s" type="button" id="coluna-cancelar">Cancelar</button>
+        <button class="btn btn-y" type="submit" id="coluna-salvar">Salvar</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 (() => {
   const SUPABASE_URL = 'https://zvvoaxscemmjrsqpfxsx.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_By1V1tGjx-Tc_ocuDVl9Sg_99Ij7U8N';
-  const COLS = [['Novo', 'Novo'], ['Contato', 'Em contato'], ['Proposta', 'Proposta'], ['Fechado', 'Fechado'], ['Descartado', 'Descartado']];
-  const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'status', 'problemas', 'oportunidade', 'notas'];
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Campos editáveis do lead, na ordem em que aparecem no pop-up.
+  const CAMPOS = [
+    ['nome', 'Nome comercial', 'text'],
+    ['profissional', 'Profissional responsável', 'text'],
+    ['segmento', 'Ramo', 'text'],
+    ['cidade', 'Cidade', 'text'],
+    ['uf', 'UF', 'text'],
+    ['endereco', 'Endereço', 'text'],
+    ['telefone', 'Telefone', 'text'],
+    ['instagram', 'Instagram', 'text'],
+    ['nota', 'Nota Google', 'number'],
+    ['avaliacoes', 'Nº avaliações', 'number'],
+    ['score', 'Score', 'number'],
+    ['prioridade', 'Prioridade', 'text'],
+    ['problemas', 'Problemas identificados', 'textarea', true],
+    ['oportunidade', 'Oportunidade comercial', 'textarea', true],
+  ];
+  const CAMPOS_CSV = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
 
   const $ = (id) => document.getElementById(id);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const numero = (v) => { if (v === '' || v == null) return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
+  const texto = (v) => (v == null ? null : String(v).trim() || null);
+
+  let colunas = [];
   let leads = [];
+  let usuario = null;
+  let leadAberto = null;
   let filtro = '';
 
-  function avisar(id, texto, erro) {
+  function avisar(id, msg, erro) {
     const el = $(id);
-    el.textContent = texto;
-    if (texto && !erro) setTimeout(() => { if (el.textContent === texto) el.textContent = ''; }, 4000);
+    el.textContent = msg;
+    if (msg && !erro) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
   }
 
   function mostrar(logado, email) {
@@ -109,78 +198,65 @@
   }
 
   async function carregar() {
-    const { data, error } = await sb.from('leads').select('*').order('rank', { ascending: true }).limit(5000);
-    if (error) { avisar('erro', 'Não foi possível carregar os leads: ' + error.message, true); return; }
-    leads = data;
+    const [c, l] = await Promise.all([
+      sb.from('colunas').select('*').order('ordem', { ascending: true }),
+      sb.from('leads').select('*').order('rank', { ascending: true }).limit(5000),
+    ]);
+    if (c.error || l.error) { avisar('erro', 'Não foi possível carregar: ' + (c.error || l.error).message, true); return; }
+    colunas = c.data;
+    leads = l.data;
+    const semColuna = leads.filter((x) => x.coluna_id == null);
+    if (semColuna.length && colunas.length) {
+      const primeira = colunas[0].id;
+      await sb.from('leads').update({ coluna_id: primeira }).is('coluna_id', null);
+      semColuna.forEach((x) => { x.coluna_id = primeira; });
+    }
     render();
   }
 
   function cardHtml(l) {
     const local = [l.cidade, l.uf].filter(Boolean).join(' - ');
-    const score = l.score != null ? ' · score ' + esc(l.score) : '';
-    const prio = l.prioridade ? ' · ' + esc(l.prioridade) : '';
     return `
     <article class="card" draggable="true" data-id="${esc(l.id)}">
-      <h3>${esc(l.nome)}</h3>
+      <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
       ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
-      <p class="meta">${esc(local)}${prio}${score}</p>
-      ${l.telefone ? `<p class="meta">${esc(l.telefone)}</p>` : ''}
-      ${l.instagram ? `<p class="meta">${esc(l.instagram)}</p>` : ''}
-      ${l.problemas ? `<p class="prob">${esc(l.problemas)}</p>` : ''}
-      <details>
-        <summary>Detalhes e notas</summary>
-        ${l.oportunidade ? `<p>${esc(l.oportunidade)}</p>` : ''}
-        ${l.endereco ? `<p>${esc(l.endereco)}</p>` : ''}
-        <label class="meta">Notas
-          <textarea rows="3" data-notas="${esc(l.id)}">${esc(l.notas || '')}</textarea>
-        </label>
-      </details>
-      <label class="mover">Mover
-        <select data-mover="${esc(l.id)}">
-          ${COLS.map(([st, label]) => `<option value="${st}"${st === l.status ? ' selected' : ''}>${label}</option>`).join('')}
-        </select>
-      </label>
+      ${local ? `<p class="meta">${esc(local)}</p>` : ''}
     </article>`;
   }
 
   function render() {
     const q = filtro.toLowerCase();
     const visiveis = leads.filter((l) => !q || [l.nome, l.cidade, l.segmento, l.instagram, l.telefone].some((v) => String(v || '').toLowerCase().includes(q)));
-    $('board').innerHTML = COLS.map(([st, label]) => {
-      const itens = visiveis.filter((l) => l.status === st);
-      return `<section class="col" data-status="${st}">
-        <header class="col-h"><h2>${label}</h2><span class="count">${itens.length}</span></header>
-        <div class="drop">${itens.map(cardHtml).join('')}</div>
+    const grupos = colunas.map((c) => ({ id: c.id, nome: c.nome, editavel: true }));
+    if (leads.some((l) => l.coluna_id == null)) grupos.push({ id: 'none', nome: 'Sem coluna', editavel: false });
+    $('board').innerHTML = grupos.map((g) => {
+      const itens = visiveis.filter((l) => (g.id === 'none' ? l.coluna_id == null : l.coluna_id === g.id));
+      const acoes = g.editavel ? `<button class="icone" type="button" data-editar-coluna="${esc(g.id)}" aria-label="Editar coluna ${esc(g.nome)}">✎</button>` : '';
+      return `<section class="col" data-col="${esc(g.id)}">
+        <header class="col-h"><h2>${esc(g.nome)}</h2><div class="acoes"><span class="count">${itens.length}</span>${acoes}</div></header>
+        <div class="drop">${itens.length ? itens.map(cardHtml).join('') : '<p class="vazio">Arraste um lead para cá</p>'}</div>
       </section>`;
     }).join('');
     $('contagem').textContent = `${visiveis.length} de ${leads.length} leads`;
   }
 
-  async function moverLead(id, status) {
+  async function moverLead(id, colId) {
     const lead = leads.find((l) => String(l.id) === String(id));
-    if (!lead || lead.status === status) return;
-    const anterior = lead.status;
-    lead.status = status;
+    const destino = colId === 'none' ? null : colId;
+    if (!lead || lead.coluna_id === destino) return;
+    const anterior = lead.coluna_id;
+    lead.coluna_id = destino;
     render();
-    const { error } = await sb.from('leads').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
-    if (error) { lead.status = anterior; render(); avisar('erro', 'Não foi possível mover: ' + error.message, true); }
+    const { error } = await sb.from('leads').update({ coluna_id: destino, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) { lead.coluna_id = anterior; render(); avisar('erro', 'Não foi possível mover: ' + error.message, true); }
   }
 
-  async function salvarNotas(id, texto) {
-    const lead = leads.find((l) => String(l.id) === String(id));
-    if (!lead || (lead.notas || '') === texto) return;
-    lead.notas = texto;
-    const { error } = await sb.from('leads').update({ notas: texto, updated_at: new Date().toISOString() }).eq('id', id);
-    if (error) avisar('erro', 'Não foi possível salvar as notas: ' + error.message, true);
-    else avisar('ok', 'Notas salvas.');
-  }
-
-  // Eventos do quadro
-  $('board').addEventListener('change', (e) => {
-    if (e.target.matches('select[data-mover]')) moverLead(e.target.dataset.mover, e.target.value);
-  });
-  $('board').addEventListener('focusout', (e) => {
-    if (e.target.matches('textarea[data-notas]')) salvarNotas(e.target.dataset.notas, e.target.value);
+  // ----- Quadro: abrir card, arrastar e buscar -----
+  $('board').addEventListener('click', (e) => {
+    const editar = e.target.closest('[data-editar-coluna]');
+    if (editar) { abrirColuna(editar.dataset.editarColuna); return; }
+    const card = e.target.closest('.card');
+    if (card) abrirLead(card.dataset.id);
   });
   $('board').addEventListener('dragstart', (e) => {
     const card = e.target.closest('.card');
@@ -209,35 +285,190 @@
     if (!col) return;
     e.preventDefault();
     col.querySelector('.drop').classList.remove('over');
-    moverLead(e.dataTransfer.getData('text/plain'), col.dataset.status);
+    moverLead(e.dataTransfer.getData('text/plain'), col.dataset.col);
   });
-
   $('busca').addEventListener('input', (e) => { filtro = e.target.value.trim(); render(); });
 
-  // Importação da planilha (aba LEADS)
-  const texto = (v) => (v === undefined || v === null) ? null : (String(v).trim() || null);
-  const numero = (v) => { if (v === undefined || v === null || v === '') return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
-  const inteiro = (v) => { const n = numero(v); return n === null ? null : Math.round(n); };
+  // ----- Pop-up do lead: dados, edição, exclusão e chat -----
+  function formHtml(l) {
+    return CAMPOS.map(([nome, rotulo, tipo, cheio]) => {
+      const valor = l[nome] ?? '';
+      const campo = tipo === 'textarea'
+        ? `<textarea class="inp" name="${nome}" rows="3">${esc(valor)}</textarea>`
+        : `<input class="inp" name="${nome}" type="${tipo}" value="${esc(valor)}"${tipo === 'number' ? ' step="any"' : ''}>`;
+      return `<label class="fl${cheio ? ' full' : ''}">${rotulo}${campo}</label>`;
+    }).join('');
+  }
+
+  function msgHtml(m) {
+    const eu = usuario && m.autor === usuario.email;
+    const hora = new Date(m.criado_em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    return `<div class="msg${eu ? ' eu' : ''}"><small>${eu ? 'Você' : esc(m.autor)} · ${esc(hora)}</small><p>${esc(m.texto)}</p></div>`;
+  }
+
+  async function carregarChat(id) {
+    const { data, error } = await sb.from('mensagens').select('*').eq('lead_id', id).order('criado_em', { ascending: true });
+    if (error) { $('chat').innerHTML = `<p class="vazio">Não foi possível carregar as observações.</p>`; return; }
+    $('chat').innerHTML = data.length ? data.map(msgHtml).join('') : '<p class="vazio">Nenhuma observação ainda.</p>';
+    $('chat').scrollTop = $('chat').scrollHeight;
+  }
+
+  function abrirLead(id) {
+    const l = leads.find((x) => String(x.id) === String(id));
+    if (!l) return;
+    leadAberto = l.id;
+    $('lead-titulo').textContent = l.nome;
+    $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    $('form-lead').innerHTML = formHtml(l);
+    $('lead-erro').textContent = '';
+    resetarExclusao();
+    $('chat').innerHTML = '<p class="vazio">Carregando...</p>';
+    $('msg-texto').value = '';
+    $('dlg-lead').showModal();
+    carregarChat(l.id);
+  }
+
+  function fecharLead() { leadAberto = null; $('dlg-lead').close(); }
+  $('lead-fechar').addEventListener('click', fecharLead);
+  $('lead-cancelar').addEventListener('click', fecharLead);
+  $('dlg-lead').addEventListener('close', () => { leadAberto = null; });
+
+  $('lead-salvar').addEventListener('click', async () => {
+    const l = leads.find((x) => String(x.id) === String(leadAberto));
+    if (!l) return;
+    const f = $('form-lead');
+    const dados = {};
+    CAMPOS.forEach(([nome, , tipo]) => {
+      const v = f.elements[nome].value;
+      dados[nome] = tipo === 'number' ? numero(v) : texto(v);
+    });
+    if (!dados.nome) { $('lead-erro').textContent = 'O nome comercial é obrigatório.'; return; }
+    $('lead-salvar').disabled = true;
+    const { error } = await sb.from('leads').update({ ...dados, updated_at: new Date().toISOString() }).eq('id', l.id);
+    $('lead-salvar').disabled = false;
+    if (error) { $('lead-erro').textContent = 'Não foi possível salvar: ' + error.message; return; }
+    Object.assign(l, dados);
+    render();
+    $('lead-titulo').textContent = l.nome;
+    $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    avisar('ok', 'Alterações salvas.');
+  });
+
+  let excluirPronto = false;
+  function resetarExclusao() {
+    excluirPronto = false;
+    $('lead-excluir').textContent = 'Excluir lead';
+    $('lead-excluir').classList.remove('confirma');
+  }
+  $('lead-excluir').addEventListener('click', async () => {
+    if (!excluirPronto) {
+      excluirPronto = true;
+      $('lead-excluir').textContent = 'Confirmar exclusão';
+      $('lead-excluir').classList.add('confirma');
+      return;
+    }
+    const id = leadAberto;
+    const { error } = await sb.from('leads').delete().eq('id', id);
+    if (error) { $('lead-erro').textContent = 'Não foi possível excluir: ' + error.message; resetarExclusao(); return; }
+    leads = leads.filter((x) => String(x.id) !== String(id));
+    fecharLead();
+    render();
+    avisar('ok', 'Lead excluído.');
+  });
+
+  $('form-msg').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const txt = $('msg-texto').value.trim();
+    if (!txt || !leadAberto || !usuario) return;
+    const { error } = await sb.from('mensagens').insert({ lead_id: leadAberto, autor: usuario.email, texto: txt });
+    if (error) { avisar('erro', 'Não foi possível enviar: ' + error.message, true); return; }
+    $('msg-texto').value = '';
+  });
+
+  // Chat em tempo real: mostra mensagens de quem estiver logado.
+  function ouvirChat() {
+    sb.channel('mensagens-crm')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, (payload) => {
+        if (String(payload.new.lead_id) !== String(leadAberto)) return;
+        const vazio = $('chat').querySelector('.vazio');
+        if (vazio) vazio.remove();
+        $('chat').insertAdjacentHTML('beforeend', msgHtml(payload.new));
+        $('chat').scrollTop = $('chat').scrollHeight;
+      })
+      .subscribe();
+  }
+
+  // ----- Colunas: criar, editar e excluir -----
+  let colunaEditando = null;
+  let excluirColunaPronto = false;
+
+  function abrirColuna(id) {
+    colunaEditando = id || null;
+    const c = colunas.find((x) => x.id === id);
+    $('coluna-titulo').textContent = c ? 'Editar coluna' : 'Nova coluna';
+    $('coluna-nome').value = c ? c.nome : '';
+    $('coluna-erro').textContent = '';
+    $('coluna-excluir').hidden = !c;
+    excluirColunaPronto = false;
+    $('coluna-excluir').textContent = 'Excluir coluna';
+    $('coluna-excluir').classList.remove('confirma');
+    $('dlg-coluna').showModal();
+    $('coluna-nome').focus();
+  }
+
+  $('nova-coluna').addEventListener('click', () => abrirColuna(null));
+  $('coluna-cancelar').addEventListener('click', () => $('dlg-coluna').close());
+
+  $('form-coluna').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nome = $('coluna-nome').value.trim();
+    if (!nome) { $('coluna-erro').textContent = 'Dê um nome para a coluna.'; return; }
+    if (colunaEditando) {
+      const { error } = await sb.from('colunas').update({ nome }).eq('id', colunaEditando);
+      if (error) { $('coluna-erro').textContent = 'Não foi possível salvar: ' + error.message; return; }
+      colunas.find((x) => x.id === colunaEditando).nome = nome;
+    } else {
+      const ordem = colunas.length ? Math.max(...colunas.map((c) => c.ordem)) + 1 : 1;
+      const { data, error } = await sb.from('colunas').insert({ nome, ordem }).select().single();
+      if (error) { $('coluna-erro').textContent = 'Não foi possível criar: ' + error.message; return; }
+      colunas.push(data);
+    }
+    $('dlg-coluna').close();
+    render();
+  });
+
+  $('coluna-excluir').addEventListener('click', async () => {
+    if (!colunaEditando) return;
+    if (!excluirColunaPronto) {
+      excluirColunaPronto = true;
+      $('coluna-excluir').textContent = 'Confirmar exclusão';
+      $('coluna-excluir').classList.add('confirma');
+      return;
+    }
+    const { error } = await sb.from('colunas').delete().eq('id', colunaEditando);
+    if (error) { $('coluna-erro').textContent = 'Não foi possível excluir: ' + error.message; return; }
+    colunas = colunas.filter((x) => x.id !== colunaEditando);
+    leads.forEach((l) => { if (l.coluna_id === colunaEditando) l.coluna_id = null; });
+    $('dlg-coluna').close();
+    render();
+    avisar('ok', 'Coluna excluída. Os leads dela ficaram em "Sem coluna".');
+  });
+
+  // ----- Importação da planilha (aba LEADS) -----
+  const MAPA = {
+    rank: 'Rank', nome: 'Nome comercial', profissional: 'Profissional responsável', segmento: 'Especialidade / segmento',
+    cidade: 'Cidade', uf: 'UF', endereco: 'Endereço (Google Maps)', telefone: 'Telefone', instagram: 'Instagram',
+    nota: 'Nota Google', avaliacoes: 'Nº avaliações', problemas: 'Problemas identificados',
+    oportunidade: 'Oportunidade comercial', prioridade: 'Prioridade', score: 'SCORE (0-100)',
+  };
 
   function mapear(r) {
-    return {
-      rank: inteiro(r['Rank']),
-      nome: texto(r['Nome comercial']),
-      profissional: texto(r['Profissional responsável']),
-      segmento: texto(r['Especialidade / segmento']),
-      cidade: texto(r['Cidade']),
-      uf: texto(r['UF']),
-      endereco: texto(r['Endereço (Google Maps)']),
-      telefone: texto(r['Telefone']),
-      instagram: texto(r['Instagram']),
-      nota: numero(r['Nota Google']),
-      avaliacoes: inteiro(r['Nº avaliações']),
-      problemas: texto(r['Problemas identificados']),
-      oportunidade: texto(r['Oportunidade comercial']),
-      prioridade: texto(r['Prioridade']),
-      score: inteiro(r['SCORE (0-100)']),
-      dados: r,
-    };
+    const o = { dados: r };
+    for (const [campo, coluna] of Object.entries(MAPA)) {
+      const v = r[coluna];
+      o[campo] = ['rank', 'avaliacoes', 'score'].includes(campo) ? (numero(v) == null ? null : Math.round(numero(v))) : (campo === 'nota' ? numero(v) : texto(v));
+    }
+    return o;
   }
 
   $('arquivo').addEventListener('change', async (e) => {
@@ -257,17 +488,19 @@
         const { error } = await sb.from('leads').upsert(registros.slice(i, i + 200), { onConflict: 'nome,cidade' });
         if (error) { avisar('erro', 'Erro ao importar: ' + error.message, true); return; }
       }
-      avisar('ok', registros.length + ' leads importados. Status e notas existentes foram mantidos.');
+      avisar('ok', registros.length + ' leads importados. Colunas, notas e observações foram mantidas.');
       await carregar();
     } catch (err) {
       avisar('erro', 'Não foi possível ler o arquivo: ' + err.message, true);
     }
   });
 
-  // Exportação em CSV
+  // ----- Exportação em CSV -----
   $('exportar').addEventListener('click', () => {
     const cel = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-    const linhas = [CAMPOS_CSV.join(';')].concat(leads.map((l) => CAMPOS_CSV.map((c) => cel(l[c])).join(';')));
+    const nomeColuna = (id) => (colunas.find((c) => c.id === id) || {}).nome || '';
+    const cab = [...CAMPOS_CSV, 'coluna'];
+    const linhas = [cab.join(';')].concat(leads.map((l) => [...CAMPOS_CSV.map((c) => l[c]), nomeColuna(l.coluna_id)].map(cel).join(';')));
     const blob = new Blob(['﻿' + linhas.join('\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -276,7 +509,7 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
-  // Login
+  // ----- Login -----
   $('form-login').addEventListener('submit', async (e) => {
     e.preventDefault();
     $('err').textContent = '';
@@ -285,12 +518,18 @@
     $('entrar').disabled = false;
     if (error || !data.session) { $('err').textContent = 'E-mail ou senha inválidos.'; return; }
     $('senha').value = '';
-    mostrar(true, data.session.user.email);
+    entrar(data.session.user);
   });
 
-  $('sair').addEventListener('click', async () => { await sb.auth.signOut(); leads = []; mostrar(false); });
+  function entrar(user) {
+    usuario = user;
+    mostrar(true, user.email);
+    ouvirChat();
+  }
 
-  sb.auth.getSession().then(({ data }) => mostrar(!!data.session, data.session?.user.email));
+  $('sair').addEventListener('click', async () => { await sb.auth.signOut(); leads = []; colunas = []; usuario = null; mostrar(false); });
+
+  sb.auth.getSession().then(({ data }) => { if (data.session) entrar(data.session.user); else mostrar(false); });
 })();
 </script>
 </body>
