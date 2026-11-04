@@ -1,6 +1,6 @@
 ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>'
 CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6"/></svg>'
-WA_NUM = '5511993918460'
+WA_NUM = '5511934304296'
 WA_TXT = 'Olá, Sharp! Quero apresentar meu desafio.'
 EMAIL = 'midia.sharp@gmail.com'
 INSTA = 'https://www.instagram.com/sharpintelligence/'
