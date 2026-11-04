@@ -13,7 +13,7 @@ PAGES = [
  ('como-trabalhamos', 'Como trabalhamos | Sharp Intelligence', 'Diagnóstico, viabilidade, proposta, desenvolvimento, testes e suporte. Veja o processo e as duas formas de contratação.', 'como-trabalhamos'),
  ('projetos', 'Projetos | Sharp Intelligence', 'Um gargalo operacional real que virou uma ferramenta simples, e pontos de partida comuns para o seu negócio.', 'projetos'),
  ('sobre', 'Sobre a Sharp | Sharp Intelligence', 'Tecnologia acessível, aplicada ao seu negócio. Soluções digitais sob medida para MEIs e pequenas empresas, em todo o Brasil.', 'sobre'),
- ('contato', 'Contato | Sharp Intelligence', 'Apresente seu desafio pelo WhatsApp (11) 99391-8460 ou por e-mail. Atendimento em todo o Brasil, 100% online.', 'contato'),
+ ('contato', 'Contato | Sharp Intelligence', 'Apresente seu desafio pelo WhatsApp (11) 93430-4296 ou por e-mail. Atendimento em todo o Brasil, 100% online.', 'contato'),
  ('privacidade', 'Política de privacidade | Sharp Intelligence', 'Como a Sharp Intelligence trata os seus dados, de acordo com a LGPD.', ''),
  ('termos', 'Termos de uso | Sharp Intelligence', 'As regras para usar o site da Sharp Intelligence.', ''),
 ]
@@ -24,7 +24,7 @@ CHEV = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4" fill=
 CTA = f'''<section class="cta"><div class="wrap rv"><h2>Apresente seu desafio.</h2><p>Conte o que está travando o seu negócio. A conversa segue no WhatsApp, com a sua mensagem já pronta.</p>
 <div class="cta-row"><a class="btn btn-y" href="contato.html#desafio">Apresentar meu desafio {ARROW}</a><a class="btn btn-o" href="{WA}" target="_blank" rel="noopener">Chamar no WhatsApp</a></div></div></section>'''
 
-JSONLD = json.dumps({"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Sharp Intelligence", "description": "Sites, sistemas online, automações com IA e dashboards sob medida para MEIs e pequenas empresas.", "telephone": "+55-11-99391-8460", "email": EMAIL, "areaServed": {"@type": "Country", "name": "Brasil"}, "sameAs": [INSTA], "slogan": "Tecnologia aplicada aos negócios"}, ensure_ascii=False)
+JSONLD = json.dumps({"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Sharp Intelligence", "description": "Sites, sistemas online, automações com IA e dashboards sob medida para MEIs e pequenas empresas.", "telephone": "+55-11-93430-4296", "email": EMAIL, "areaServed": {"@type": "Country", "name": "Brasil"}, "sameAs": [INSTA], "slogan": "Tecnologia aplicada aos negócios"}, ensure_ascii=False)
 
 def layout(name, title, desc, cur, body):
     attr = ' aria-current="page"'
@@ -67,7 +67,7 @@ def layout(name, title, desc, cur, body):
     <div><h2>Soluções</h2>{sol_links}</div>
     <div><h2>Empresa</h2><a href="como-trabalhamos.html">Como trabalhamos</a><a href="projetos.html">Projetos</a><a href="sobre.html">Sobre</a><a href="contato.html">Contato</a><a href="administrativo.html">Administrativo</a></div>
     <div><h2>Legal</h2><a href="privacidade.html">Privacidade</a><a href="termos.html">Termos de uso</a></div>
-    <div><h2>Fale com a Sharp</h2><a href="{WA}" target="_blank" rel="noopener">WhatsApp (11) 99391-8460</a><a href="mailto:{EMAIL}">{EMAIL}</a><a href="{INSTA}" target="_blank" rel="noopener">Instagram @sharpintelligence</a><p>Atendimento em todo o Brasil, 100% online.</p></div>
+    <div><h2>Fale com a Sharp</h2><a href="{WA}" target="_blank" rel="noopener">WhatsApp (11) 93430-4296</a><a href="mailto:{EMAIL}">{EMAIL}</a><a href="{INSTA}" target="_blank" rel="noopener">Instagram @sharpintelligence</a><p>Atendimento em todo o Brasil, 100% online.</p></div>
   </div>
   <div class="ft-end"><span>© <span id="ano">2026</span> Sharp Intelligence</span><span>As telas do site são exemplos ilustrativos.</span></div>
 </div></footer>

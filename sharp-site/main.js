@@ -46,7 +46,7 @@
       if (!v('nome') || !v('problema')) { err.hidden = false; return; }
       err.hidden = true;
       const msg = ['Olá, Sharp! Quero apresentar meu desafio.', '', `Nome: ${v('nome')}`, v('empresa') ? `Empresa e segmento: ${v('empresa')}` : null, `Problema: ${v('problema')}`, v('resultado') ? `O que quero melhorar: ${v('resultado')}` : null].filter((l) => l !== null).join('\n');
-      window.open('https://wa.me/5511993918460?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+      window.open('https://wa.me/5511934304296?text=' + encodeURIComponent(msg), '_blank', 'noopener');
     });
   }
   const rail = document.querySelector('.rail-wrap .rail');
