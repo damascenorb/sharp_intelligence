@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Demonstração do CRM | Sharp Intelligence</title>
+<meta name="theme-color" content="#050b1e">
+<link rel="icon" type="image/png" href="../assets/sharp-mark-dark.png">
+<link rel="stylesheet" href="../styles.css">
+<style>
+body { background: #f3f5fc; color: #0a1030; }
+.hd { background: rgba(255,255,255,.92); border-bottom: 1px solid #dfe4f5; }
+.hd .brand { color: #0a1030; }
+.adm { padding-block: 40px 80px; }
+.adm h1 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem); color: #0a1030; }
+.sub, .muted { color: #4a5478; }
+.box { background: #fff; border: 1px solid #dfe4f5; border-radius: 18px; padding: 24px; max-width: 420px; box-shadow: 0 24px 50px rgba(10,16,48,.08); }
+.field { display: grid; gap: 6px; margin-bottom: 16px; }
+.field label, .lbl, .fl { font-weight: 700; font-size: .9rem; color: #0a1030; }
+.inp { font: inherit; padding: 11px 14px; border-radius: 12px; border: 1px solid #dfe4f5; background: #fff; color: #0a1030; min-height: 44px; width: 100%; }
+.inp:focus { outline: 2px solid #2f6bff; outline-offset: 1px; }
+textarea.inp { min-height: 88px; resize: vertical; }
+.err { color: #b42318; min-height: 1.4em; margin-bottom: 8px; }
+.ok { color: #1b7f3a; min-height: 1.4em; margin-top: 8px; }
+.bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; justify-content: space-between; margin-bottom: 20px; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.tools .inp { width: 230px; }
+.btn-s { font: inherit; font-weight: 700; padding: 10px 18px; border-radius: 999px; border: 1px solid #dfe4f5; background: #fff; color: #0a1030; cursor: pointer; min-height: 44px; }
+.btn-s:hover { border-color: #2f6bff; color: #2f6bff; }
+.btn-d { color: #b42318; border-color: #f0c4c0; }
+.btn-d.confirma { background: #b42318; color: #fff; border-color: #b42318; }
+.btn-p { font: inherit; font-weight: 700; padding: 11px 22px; border-radius: 999px; border: 0; background: #2f6bff; color: #fff; cursor: pointer; min-height: 44px; }
+.btn-p:disabled { opacity: .6; cursor: default; }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: min(340px, 84vw); gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 14px; align-items: start; }
+.col { background: #e8ecf8; border: 1px solid #dfe4f5; border-radius: 16px; display: flex; flex-direction: column; scroll-snap-align: start; min-width: 0; }
+.col-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 16px; border-radius: 16px 16px 0 0; background: var(--c); color: var(--t); }
+.col-h h2 { font-size: 1rem; }
+.col-h .acoes { display: flex; align-items: center; gap: 8px; }
+.count { background: rgba(255,255,255,.3); border-radius: 999px; padding: 2px 10px; font-size: .85rem; font-weight: 700; }
+.icone { font: inherit; background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.45); color: inherit; border-radius: 10px; width: 34px; height: 34px; cursor: pointer; }
+.icone:hover { background: rgba(255,255,255,.4); }
+.drop { display: grid; gap: 10px; padding: 10px; align-content: start; min-height: 120px; border-radius: 0 0 16px 16px; }
+.drop.over { background: rgba(47,107,255,.10); }
+.lead-card { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 14px; padding: 14px; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
+.lead-card:hover { border-color: #2f6bff; }
+.lead-card.arrastando { opacity: .45; }
+.card-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+.lead-card h3 { font-size: 1rem; line-height: 1.25; color: #0a1030; }
+.score { flex: 0 0 auto; background: #2f6bff; color: #fff; border-radius: 999px; padding: 3px 10px; font-weight: 800; font-size: .85rem; }
+.lead-card .seg { color: #2f6bff; font-size: .88rem; margin-top: 6px; font-weight: 600; }
+.lead-card .meta { color: #4a5478; font-size: .85rem; margin-top: 4px; }
+.link-wa { color: #1b7f3a; font-weight: 700; text-decoration: none; }
+.link-wa:hover { text-decoration: underline; }
+.vazio { color: #4a5478; font-size: .9rem; padding: 8px 4px; }
+dialog { background: #fff; color: #0a1030; border: 1px solid #dfe4f5; border-radius: 18px; padding: 0; width: min(720px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); box-shadow: 0 30px 80px rgba(10,16,48,.25); }
+dialog::backdrop { background: rgba(10,16,48,.45); }
+.dlg { display: flex; flex-direction: column; max-height: calc(100vh - 40px); max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); }
+.dlg-h { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 20px 22px; border-bottom: 1px solid #dfe4f5; }
+.dlg-h h2 { font-size: 1.3rem; color: #0a1030; }
+.dlg-b { overflow-y: auto; padding: 20px 22px; display: grid; gap: 22px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+.grid2 .full { grid-column: 1 / -1; }
+.fl { display: grid; gap: 6px; }
+.chat { display: grid; gap: 10px; max-height: 280px; overflow-y: auto; padding: 4px; }
+.msg { max-width: 85%; background: #f3f5fc; border: 1px solid #dfe4f5; border-radius: 14px; padding: 10px 12px; }
+.msg.eu { justify-self: end; background: #2f6bff; border-color: #2f6bff; color: #fff; }
+.msg small { display: block; color: #4a5478; font-size: .75rem; margin-bottom: 4px; }
+.msg.eu small { color: #dbe6ff; }
+.msg p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.envio { display: flex; gap: 10px; margin-top: 10px; }
+.envio .inp { flex: 1; }
+.dlg-f { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 16px 22px; border-top: 1px solid #dfe4f5; }
+.dlg-f .grupo { display: flex; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+.adm section { padding-block: 0; }
+.prio { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .85rem; margin-top: 8px; color: #0a1030; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 10px; }
+.dot.alta { background: #1b7f3a; }
+.dot.media { background: #d59b00; }
+.dot.baixa { background: #b42318; }
+.card-acoes { display: flex; justify-content: flex-end; margin-top: 12px; }
+.btn-chat { font: inherit; font-weight: 700; font-size: .85rem; padding: 7px 16px; border-radius: 999px; border: 0; background: #2f6bff; color: #fff; cursor: pointer; }
+.btn-chat:hover { background: #0b2bb8; }
+.link-zap { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; background: #1b7f3a; color: #fff; border-color: #1b7f3a; }
+.link-zap:hover { background: #156a2f; color: #fff; }
+.link-zap[hidden] { display: none; }
+#dlg-chat { width: min(600px, calc(100vw - 32px)); }
+#dlg-chat .chat { max-height: 58vh; }
+
+.adm section { padding-block: 0; }
+.prio { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .85rem; margin-top: 8px; color: #0a1030; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 10px; }
+.dot.alta { background: #1b7f3a; }
+.dot.media { background: #d59b00; }
+.dot.baixa { background: #b42318; }
+.card-acoes { display: flex; justify-content: flex-end; margin-top: 12px; }
+.btn-chat { font: inherit; font-weight: 700; font-size: .85rem; padding: 7px 16px; border-radius: 999px; border: 0; background: #2f6bff; color: #fff; cursor: pointer; }
+.btn-chat:hover { background: #0b2bb8; }
+.link-zap { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; background: #1b7f3a; color: #fff; border-color: #1b7f3a; }
+.link-zap:hover { background: #156a2f; color: #fff; }
+.link-zap[hidden] { display: none; }
+#dlg-chat { width: min(600px, calc(100vw - 32px)); }
+#dlg-chat .chat { max-height: 58vh; }
+.btn-limpar { font: inherit; font-size: .85rem; font-weight: 700; margin-top: 12px; padding: 6px 12px; border-radius: 10px; border: 1px dashed #d8a5a0; background: transparent; color: #b42318; cursor: pointer; }
+.btn-limpar:hover { background: #fdecea; }
+.btn-d-forte { font: inherit; font-weight: 700; padding: 11px 20px; border-radius: 999px; border: 0; background: #b42318; color: #fff; cursor: pointer; min-height: 44px; }
+.tabs { display: flex; gap: 6px; padding: 12px 22px 0; border-bottom: 1px solid #dfe4f5; }
+.tab { font: inherit; font-weight: 700; padding: 10px 16px; border: 0; background: none; color: #4a5478; border-bottom: 3px solid transparent; cursor: pointer; }
+.tab.on { color: #2f6bff; border-bottom-color: #2f6bff; }
+.contato-acoes { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+.botoes { display: flex; gap: 10px; flex-wrap: wrap; }
+.link-maps { color: #2f6bff; font-weight: 700; text-decoration: underline; }
+.btn-zap, .btn-ig, .btn-maps { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; padding: 10px 18px; border-radius: 999px; text-decoration: none; min-height: 44px; color: #fff; }
+.btn-zap { background: #1b7f3a; }
+.btn-zap:hover { background: #156a2f; }
+.btn-ig { background: #c13584; }
+.btn-maps { background: #2f6bff; }
+.btn-maps:hover { background: #0b2bb8; }
+.btn-maps.off { background: #d5dae6; color: #6b7490; pointer-events: none; }
+.nicho { font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #4a5478; margin-top: 8px; }
+.btn-ig:hover { background: #a02a6e; }
+[hidden] { display: none !important; }
+.secoes { display: grid; gap: 22px; }
+.sec h3 { font-size: .95rem; text-transform: uppercase; letter-spacing: .08em; color: #2f6bff; margin-bottom: 10px; }
+.destaque { background: #eaf2ff; border: 1px solid #b9d0ff; border-radius: 14px; padding: 12px 14px; }
+.destaque label { color: #0a1030; }
+.extras { display: grid; gap: 14px; }
+.extras div { display: grid; gap: 4px; padding-bottom: 12px; border-bottom: 1px solid #dfe4f5; }
+.extras dt { font-weight: 700; color: #4a5478; font-size: .85rem; }
+.extras dd { color: #0a1030; overflow-wrap: anywhere; }
+.extras a { color: #2f6bff; text-decoration: underline; }
+
+.adm section { padding-block: 0; }
+
+/* ----- Celular ----- */
+.tab-bar-wrap { overflow-x: auto; }
+@media (max-width: 760px) {
+  .adm { padding-block: 24px 60px; }
+  .bar { flex-direction: column; align-items: stretch; }
+  .bar > div:first-child { width: 100%; }
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .tools .inp { width: 100%; grid-column: 1 / -1; }
+  .tools .btn-s, .tools label.btn-s { width: 100%; text-align: center; padding-inline: 8px; font-size: .9rem; }
+  .tools .muted { grid-column: 1 / -1; font-size: .85rem; overflow-wrap: anywhere; }
+  .board { grid-auto-columns: 86vw; gap: 10px; margin-inline: -16px; padding-inline: 16px; scroll-padding-inline: 16px; }
+  .lead-card { padding: 12px; }
+  .lead-card h3 { font-size: .95rem; }
+  .tabs { overflow-x: auto; gap: 2px; padding-inline: 12px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 10px 12px; white-space: nowrap; font-size: .92rem; }
+  .contato-acoes { flex-direction: column; align-items: stretch; }
+  .botoes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .botoes a { padding-inline: 6px; font-size: .9rem; }
+  dialog { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; margin: 0; }
+  dialog .dlg { height: 100vh; max-height: 100vh; }
+  .dlg-h, .dlg-b, .dlg-f { padding-inline: 14px; }
+  .dlg-f { flex-direction: column-reverse; align-items: stretch; }
+  .dlg-f .grupo { display: grid; grid-template-columns: 1fr 1fr; }
+  .dlg-f .grupo .btn-p, .dlg-f .grupo .btn-s { width: 100%; }
+  .dlg-f > .btn-d { width: 100%; }
+  .envio { flex-direction: column; }
+  .envio .btn-p { width: 100%; }
+  #dlg-zerar, #dlg-coluna { width: calc(100vw - 24px); height: auto; max-height: 90vh; border-radius: 18px; }
+  #dlg-zerar .dlg, #dlg-coluna .dlg { height: auto; max-height: 90vh; }
+  .grid2 { grid-template-columns: 1fr; }
+  .inp { font-size: 16px; }
+}
+
+/* ----- Pop-up compacto no celular ----- */
+@media (max-width: 760px) {
+  dialog { font-size: 14px; }
+  .dlg-h { padding: 14px 14px 10px; }
+  .dlg-h h2 { font-size: 1.1rem; line-height: 1.2; }
+  .dlg-h .sub { font-size: .85rem; margin-top: 2px; }
+  .contato-acoes { margin-bottom: 10px; }
+  .botoes a { min-height: 38px; font-size: .85rem; padding: 8px 10px; }
+  .tabs { flex-wrap: wrap; overflow: visible; gap: 0; padding: 0 8px; border-bottom: 1px solid #dfe4f5; }
+  .tab { flex: 1 1 auto; padding: 9px 6px; font-size: .8rem; text-align: center; border-bottom-width: 2px; }
+  .dlg-b { padding: 12px 14px; gap: 14px; }
+  .sec h3 { font-size: .78rem; margin-bottom: 6px; }
+  .fl { font-size: .8rem; gap: 4px; }
+  .inp { padding: 8px 10px; min-height: 40px; font-size: 16px; border-radius: 10px; }
+  textarea.inp { min-height: 64px; }
+  .grid2 { gap: 8px; }
+  .msg { max-width: 92%; padding: 8px 10px; font-size: .85rem; }
+  .msg small { font-size: .7rem; }
+  .chat { max-height: 52vh; }
+  .dlg-f { padding: 10px 14px; gap: 8px; }
+  .dlg-f .btn-p, .dlg-f .btn-s { min-height: 40px; font-size: .9rem; padding: 8px 14px; }
+  .extras dt { font-size: .78rem; }
+  .extras dd { font-size: .88rem; }
+  .destaque { padding: 8px 10px; }
+  .lead-card { padding: 10px; }
+  .lead-card h3 { font-size: .9rem; }
+  .prio, .lead-card .seg, .lead-card .meta { font-size: .78rem; margin-top: 4px; }
+  .nicho { font-size: .7rem; margin-top: 4px; }
+  .btn-chat { padding: 5px 12px; font-size: .78rem; }
+}
+.demo-aviso { margin: 14px 0 0; padding: 10px 14px; border-radius: 12px; background: #0a1030; color: #fff; font-size: .9rem; text-align: center; }
+#zerar, #exportar, #sair, #nova-coluna, #lead-excluir, .tab[data-tab="extras"], .tab[data-tab="concorrencia"], label[for="arquivo"] { display: none !important; }
+</style>
+
+</head>
+<body>
+<header class="hd"><div class="wrap hd-in">
+  <a class="brand" href="../index.html" aria-label="Sharp Intelligence, início"><img src="../assets/sharp-mark.png" alt="" width="29" height="42"><span>Sharp</span></a>
+  <span class="muted">CRM</span>
+</div></header>
+
+<main class="adm wrap" id="conteudo">
+  <p class="demo-aviso">Demonstração com dados fictícios. Nenhum dado real é exibido ou salvo.</p>
+  <section id="login" hidden>
+    <h1>Entrar</h1>
+    <p class="sub">Acesso restrito à equipe Sharp.</p>
+    <form class="box" id="form-login" novalidate style="margin-top:24px">
+      <div class="field"><label for="email">E-mail</label><input class="inp" id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="senha">Senha</label><input class="inp" id="senha" type="password" autocomplete="current-password" required></div>
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn-p" type="submit" id="entrar">Entrar</button>
+    </form>
+  </section>
+
+  <section id="app" hidden>
+    <div class="bar">
+      <div>
+        <h1>Pipeline de leads</h1>
+        <p class="sub" id="contagem"></p>
+        <button class="btn-limpar" type="button" id="zerar">Limpar todos os leads</button>
+      </div>
+      <div class="tools">
+        <input class="inp" id="busca" type="search" placeholder="Buscar empresa, ramo, cidade...">
+        <button class="btn-s" type="button" id="nova-coluna">Nova coluna</button>
+        <label class="btn-s" for="arquivo">Importar planilha</label>
+        <input id="arquivo" type="file" accept=".xlsx,.xls,.csv" hidden>
+        <button class="btn-s" type="button" id="exportar">Exportar CSV</button>
+        <span class="muted" id="usuario"></span>
+        <button class="btn-s" type="button" id="sair">Sair</button>
+      </div>
+    </div>
+    <p class="ok" id="ok" role="status"></p>
+    <p class="err" id="erro" role="alert"></p>
+    <div class="board" id="board"></div>
+  </section>
+</main>
+
+<dialog id="dlg-lead">
+  <div class="dlg">
+    <div class="dlg-h">
+      <div><h2 id="lead-titulo"></h2><p class="sub" id="lead-sub"></p></div>
+      <button class="icone" type="button" id="lead-fechar" aria-label="Fechar">✕</button>
+    </div>
+    <div class="contato-acoes">
+      <div class="botoes">
+        <a class="btn-zap" id="lead-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
+        <a class="btn-ig" id="lead-ig" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
+        <a class="btn-maps" id="lead-maps" href="#" target="_blank" rel="noopener">Maps</a>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab on" type="button" data-tab="principal" role="tab">Principal</button>
+      <button class="tab" type="button" data-tab="diagnostico" role="tab">Diagnóstico</button>
+      <button class="tab" type="button" data-tab="mensagens" role="tab">Mensagens</button>
+      <button class="tab" type="button" data-tab="concorrencia" role="tab">Concorrência</button>
+      <button class="tab" type="button" data-tab="extras" role="tab">Extras</button>
+    </div>
+    <div class="dlg-b">
+      <form id="form-lead" class="secoes">
+        <div class="painel" data-aba="principal" id="painel-principal"></div>
+        <div class="painel" data-aba="diagnostico" id="painel-diagnostico" hidden></div>
+        <div class="painel" data-aba="mensagens" id="painel-mensagens" hidden></div>
+        <div class="painel" data-aba="concorrencia" id="painel-concorrencia" hidden></div>
+      </form>
+      <div class="painel" data-aba="extras" id="painel-extras" hidden></div>
+    </div>
+    <div class="dlg-f">
+      <button class="btn-s btn-d" type="button" id="lead-excluir">Excluir lead</button>
+      <div class="grupo">
+        <button class="btn-s" type="button" id="lead-cancelar">Cancelar</button>
+        <button class="btn-p" type="button" id="lead-salvar">Salvar alterações</button>
+      </div>
+    </div>
+    <p class="err" id="lead-erro" role="alert" style="padding:0 22px 14px"></p>
+  </div>
+</dialog>
+
+<dialog id="dlg-chat">
+  <div class="dlg">
+    <div class="dlg-h">
+      <div><h2 id="chat-titulo">Observações</h2><p class="sub" id="chat-sub"></p></div>
+      <button class="icone" type="button" id="chat-fechar" aria-label="Fechar">✕</button>
+    </div>
+    <div class="dlg-b" style="gap:12px">
+      <div class="chat" id="chat"></div>
+      <form class="envio" id="form-msg">
+        <input class="inp" id="msg-texto" type="text" maxlength="2000" placeholder="Escreva uma observação..." autocomplete="off">
+        <button class="btn-p" type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlg-zerar">
+  <div class="dlg" style="padding:24px;gap:18px">
+    <h2 id="zerar-titulo" style="font-size:1.25rem">1 - Tem certeza?</h2>
+    <p class="sub" id="zerar-texto">Isso apaga todos os leads e as observações do chat. Não dá para desfazer.</p>
+    <p class="err" id="zerar-erro" role="alert"></p>
+    <div class="dlg-f" style="padding:0;border:0">
+      <button class="btn-s" type="button" id="zerar-nao">Não, cancelar</button>
+      <button class="btn-d-forte" type="button" id="zerar-sim">Sim</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="dlg-coluna">
+  <form method="dialog" class="dlg" id="form-coluna" style="padding:22px;gap:16px">
+    <h2 id="coluna-titulo" style="font-size:1.2rem">Nova coluna</h2>
+    <label class="fl">Nome da coluna<input class="inp" id="coluna-nome" type="text" maxlength="40" required></label>
+    <p class="err" id="coluna-erro" role="alert"></p>
+    <div class="dlg-f" style="padding:0;border:0">
+      <button class="btn-s btn-d" type="button" id="coluna-excluir" hidden>Excluir coluna</button>
+      <div class="grupo">
+        <button class="btn-s" type="button" id="coluna-cancelar">Cancelar</button>
+        <button class="btn-p" type="submit" id="coluna-salvar">Salvar</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+(() => {
+  // Demonstração: banco em memória com dados fictícios. Sem Supabase, sem login, nada é salvo no servidor.
+  const USUARIO = { email: 'demonstracao@sharp.com.br' };
+  const DADOS_INICIAIS = () => ({
+    colunas: [
+      { id: 'c1', nome: 'Novos contatos', ordem: 1 },
+      { id: 'c2', nome: 'Conversa iniciada', ordem: 2 },
+      { id: 'c3', nome: 'Proposta enviada', ordem: 3 },
+      { id: 'c4', nome: 'Fechado', ordem: 4 },
+    ],
+    leads: [
+      { id: 1, rank: 1, nome: 'Clínica Bem Viver', profissional: 'Marina Costa', segmento: 'Psicologia', cidade: 'São Paulo', uf: 'SP', endereco: 'Rua Exemplo, 100', telefone: '(11) 90000-0001', nota: 4.8, avaliacoes: 37, prioridade: 'Alta', score: 88, problemas: 'Sem site; agenda só por WhatsApp', oportunidade: 'Site com agendamento online', coluna_id: 'c1', dados: { Nicho: 'Clínicas de saúde', 'Possui site próprio?': 'Não, só perfil no Instagram', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Alto', 'Primeira mensagem': 'Olá, Marina! Vi as avaliações da Clínica Bem Viver e queria mostrar uma ideia rápida para a agenda online.', 'Concorrente 1': 'Clínica Equilíbrio' } },
+      { id: 2, rank: 2, nome: 'Pet Sorriso Banho & Tosa', profissional: 'Rafael Lima', segmento: 'Banho e tosa', cidade: 'Santo André', uf: 'SP', telefone: '(11) 90000-0002', nota: 4.6, avaliacoes: 92, prioridade: 'Alta', score: 84, problemas: 'Agendamento manual; sem pacotes visíveis', oportunidade: 'Página de pacotes e lembrete automático', coluna_id: 'c1', dados: { Nicho: 'Pet shop', 'Possui site próprio?': 'Não', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Médio' } },
+      { id: 3, rank: 3, nome: 'Padaria Pão Quente', profissional: 'Sônia Alves', segmento: 'Padaria', cidade: 'São Bernardo do Campo', uf: 'SP', telefone: '(11) 90000-0003', nota: 4.4, avaliacoes: 58, prioridade: 'Média', score: 66, problemas: 'Encomendas por telefone', oportunidade: 'Catálogo de encomendas', coluna_id: 'c2', dados: { Nicho: 'Padaria e confeitaria', 'Possui site próprio?': 'Não', 'Melhor canal': 'Instagram', 'Potencial de investimento': 'Médio' } },
+      { id: 4, rank: 4, nome: 'Estúdio Lumi Fotos', profissional: 'Bruno Teixeira', segmento: 'Fotografia', cidade: 'São Paulo', uf: 'SP', telefone: '(11) 90000-0004', nota: 4.9, avaliacoes: 21, prioridade: 'Alta', score: 91, problemas: 'Portfólio espalhado em redes', oportunidade: 'Portfólio com galerias e orçamento', coluna_id: 'c2', dados: { Nicho: 'Fotografia', 'Possui site próprio?': 'Sim, desatualizado', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Alto' } },
+      { id: 5, rank: 5, nome: 'Oficina Motor Forte', profissional: 'Carlos Mendes', segmento: 'Mecânica', cidade: 'Diadema', uf: 'SP', telefone: '(11) 90000-0005', nota: 4.2, avaliacoes: 34, prioridade: 'Média', score: 60, problemas: 'Orçamento sem padrão', oportunidade: 'Solicitação de orçamento online', coluna_id: 'c3', dados: { Nicho: 'Oficina mecânica', 'Possui site próprio?': 'Não', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Médio' } },
+      { id: 6, rank: 6, nome: 'Barbearia Navalha de Ouro', profissional: 'Diego Nunes', segmento: 'Barbearia', cidade: 'São Paulo', uf: 'SP', telefone: '(11) 90000-0006', nota: 4.7, avaliacoes: 110, prioridade: 'Média', score: 71, problemas: 'Sem agenda online', oportunidade: 'Agendamento e fidelidade', coluna_id: 'c3', dados: { Nicho: 'Barbearia', 'Possui site próprio?': 'Não', 'Melhor canal': 'Instagram', 'Potencial de investimento': 'Médio' } },
+      { id: 7, rank: 7, nome: 'Confeitaria Doce Afeto', profissional: 'Juliana Prado', segmento: 'Confeitaria', cidade: 'Santo André', uf: 'SP', telefone: '(11) 90000-0007', nota: 4.9, avaliacoes: 75, prioridade: 'Alta', score: 86, problemas: 'Sem site', oportunidade: 'Site com catálogo e encomenda', coluna_id: 'c4', dados: { Nicho: 'Confeitaria', 'Possui site próprio?': 'Não', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Alto' } },
+      { id: 8, rank: 8, nome: 'Academia Corpo Ativo', profissional: 'Thiago Rocha', segmento: 'Academia', cidade: 'São Caetano do Sul', uf: 'SP', telefone: '(11) 90000-0008', nota: 4.3, avaliacoes: 46, prioridade: 'Baixa', score: 48, problemas: 'Planos só presenciais', oportunidade: 'Página de planos e aula experimental', coluna_id: 'c1', dados: { Nicho: 'Academia', 'Possui site próprio?': 'Sim, básico', 'Melhor canal': 'E-mail', 'Potencial de investimento': 'Baixo' } },
+      { id: 9, rank: 9, nome: 'Advocacia Ramos & Lima', profissional: 'Patrícia Ramos', segmento: 'Advocacia', cidade: 'São Paulo', uf: 'SP', telefone: '(11) 90000-0009', nota: 4.8, avaliacoes: 19, prioridade: 'Média', score: 63, problemas: 'Conteúdo institucional antigo', oportunidade: 'Páginas por área de atuação', coluna_id: 'c2', dados: { Nicho: 'Escritório de advocacia', 'Possui site próprio?': 'Sim, antigo', 'Melhor canal': 'E-mail', 'Potencial de investimento': 'Médio' } },
+      { id: 10, rank: 10, nome: 'Hamburgueria Brasa Viva', profissional: 'Lucas Monteiro', segmento: 'Hamburgueria', cidade: 'Mauá', uf: 'SP', telefone: '(11) 90000-0010', nota: 4.5, avaliacoes: 133, prioridade: 'Alta', score: 79, problemas: 'Pedidos só por aplicativo de terceiros', oportunidade: 'Cardápio e pedido direto', coluna_id: 'c3', dados: { Nicho: 'Lanchonete', 'Possui site próprio?': 'Não', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Alto' } },
+      { id: 11, rank: 11, nome: 'Salão Flor de Lis', profissional: 'Renata Souza', segmento: 'Salão de beleza', cidade: 'Santo André', uf: 'SP', telefone: '(11) 90000-0011', nota: 4.6, avaliacoes: 62, prioridade: 'Baixa', score: 52, problemas: 'Sem presença fora do Instagram', oportunidade: 'Página de serviços', coluna_id: 'c4', dados: { Nicho: 'Salão de beleza', 'Possui site próprio?': 'Não', 'Melhor canal': 'Instagram', 'Potencial de investimento': 'Baixo' } },
+      { id: 12, rank: 12, nome: 'Escola de Idiomas Fala Comigo', profissional: 'Helena Duarte', segmento: 'Idiomas', cidade: 'São Paulo', uf: 'SP', telefone: '(11) 90000-0012', nota: 4.7, avaliacoes: 88, prioridade: 'Média', score: 69, problemas: 'Matrícula com muitas etapas', oportunidade: 'Teste de nível e matrícula online', coluna_id: 'c4', dados: { Nicho: 'Escola de idiomas', 'Possui site próprio?': 'Sim, básico', 'Melhor canal': 'WhatsApp', 'Potencial de investimento': 'Médio' } },
+    ],
+    mensagens: [
+      { id: 1, lead_id: 1, autor: 'demonstracao@sharp.com.br', texto: 'Ligou às 10h, pediu proposta por WhatsApp.', criado_em: '2026-10-28T13:10:00Z' },
+      { id: 2, lead_id: 1, autor: 'demonstracao@sharp.com.br', texto: 'Enviada a primeira mensagem. Aguardando retorno.', criado_em: '2026-10-29T09:42:00Z' },
+    ],
+  });
+  let db = DADOS_INICIAIS();
+  let proximoId = 1000;
+  const ouvintes = [];
+  function Consulta(tabela) {
+    const filtros = [];
+    let ordem = null, limite = null, op = 'select', carga = null, unico = false;
+    const casam = (r) => filtros.every((f) => f(r));
+    const q = {
+      select() { return q; },
+      order(c, o) { ordem = { c: c, asc: !o || o.ascending !== false }; return q; },
+      limit(n) { limite = n; return q; },
+      eq(c, v) { filtros.push((r) => String(r[c]) === String(v)); return q; },
+      is(c) { filtros.push((r) => r[c] == null); return q; },
+      gt(c, v) { filtros.push((r) => r[c] > v); return q; },
+      update(p) { op = 'update'; carga = p; return q; },
+      insert(p) { op = 'insert'; carga = p; return q; },
+      upsert(p) { op = 'upsert'; carga = p; return q; },
+      delete() { op = 'delete'; return q; },
+      single() { unico = true; return q; },
+      then(ok, falha) { return executar().then(ok, falha); },
+    };
+    function executar() {
+      let data;
+      if (op === 'insert') {
+        const novos = (Array.isArray(carga) ? carga : [carga]).map((p) => Object.assign({ id: proximoId++, criado_em: new Date().toISOString() }, p));
+        db[tabela].push(...novos);
+        if (tabela === 'mensagens') novos.forEach((m) => ouvintes.forEach((cb) => cb({ new: m })));
+        data = unico ? novos[0] : novos;
+      } else if (op === 'upsert') {
+        const linhas = carga.map((p) => {
+          const achou = db[tabela].find((r) => r.nome === p.nome && r.cidade === p.cidade);
+          if (achou) return Object.assign(achou, p);
+          const novo = Object.assign({ id: proximoId++ }, p);
+          db[tabela].push(novo);
+          return novo;
+        });
+        data = linhas;
+      } else {
+        const alvo = db[tabela].filter(casam);
+        if (op === 'update') alvo.forEach((r) => Object.assign(r, carga));
+        if (op === 'delete') db[tabela] = db[tabela].filter((r) => !casam(r));
+        let saida = alvo.slice();
+        if (ordem) saida.sort((a, b) => { const x = a[ordem.c], y = b[ordem.c]; return (x > y ? 1 : x < y ? -1 : 0) * (ordem.asc ? 1 : -1); });
+        if (limite != null) saida = saida.slice(0, limite);
+        data = unico ? saida[0] : saida;
+      }
+      return Promise.resolve({ data: data, error: null });
+    }
+    return q;
+  }
+  const sb = {
+    from: (tabela) => Consulta(tabela),
+    channel() { const c = { on(_e, _f, cb) { ouvintes.push(cb); return c; }, subscribe() { return c; } }; return c; },
+    auth: {
+      getSession: async () => ({ data: { session: { user: USUARIO } } }),
+      signInWithPassword: async () => ({ data: { user: USUARIO }, error: null }),
+      signOut: async () => ({ error: null }),
+    },
+  };
+
+  const PALETA = [['#8fdcf7', '#0a1030'], ['#2f6bff', '#ffffff'], ['#0b2bb8', '#ffffff'], ['#5cc8f0', '#0a1030'], ['#4a5478', '#ffffff']];
+  const SECOES = [
+    { sec: 'Contato' },
+    { id: 'nome', key: 'nome', src: 'col', label: 'Nome comercial' },
+    { id: 'profissional', key: 'profissional', src: 'col', label: 'Profissional responsável' },
+    { id: 'nicho', key: 'Nicho', src: 'dados', label: 'Nicho' },
+    { id: 'segmento', key: 'segmento', src: 'col', label: 'Especialidade / segmento' },
+    { id: 'cidade', key: 'cidade', src: 'col', label: 'Cidade' },
+    { id: 'uf', key: 'uf', src: 'col', label: 'UF' },
+    { id: 'telefone', key: 'telefone', src: 'col', label: 'Telefone' },
+    { id: 'instagram', key: 'instagram', src: 'col', label: 'Instagram' },
+    { sec: 'Presença digital' },
+    { id: 'site', key: 'Possui site próprio?', src: 'dados', label: 'Possui site próprio?', tipo: 'textarea', cheio: true, destaque: true },
+    { id: 'qualidade', key: 'Qualidade da presença digital', src: 'dados', label: 'Qualidade da presença digital', tipo: 'textarea', cheio: true },
+    { id: 'canal', key: 'Melhor canal', src: 'dados', label: 'Melhor canal' },
+    { sec: 'Diagnóstico' },
+    { id: 'problemas', key: 'problemas', src: 'col', label: 'Problemas identificados', tipo: 'textarea', cheio: true },
+    { id: 'oportunidade', key: 'oportunidade', src: 'col', label: 'Oportunidade comercial', tipo: 'textarea', cheio: true },
+    { id: 'potencial', key: 'Potencial de investimento', src: 'dados', label: 'Potencial de investimento', tipo: 'textarea', cheio: true },
+    { id: 'score', key: 'score', src: 'col', label: 'SCORE (0-100)', tipo: 'number' },
+    { id: 'prioridade', key: 'prioridade', src: 'col', label: 'Prioridade' },
+    { sec: 'Mensagens' },
+    { id: 'msg1', key: 'Primeira mensagem', src: 'dados', label: 'Primeira mensagem', tipo: 'textarea', cheio: true },
+    { id: 'fu1', key: 'Follow-up 1 (3 dias)', src: 'dados', label: 'Follow-up 1 (3 dias)', tipo: 'textarea', cheio: true },
+    { id: 'fu2', key: 'Follow-up 2 (7 dias)', src: 'dados', label: 'Follow-up 2 (7 dias)', tipo: 'textarea', cheio: true },
+    { sec: 'Concorrência' },
+    { id: 'conc1', key: 'Concorrente 1', src: 'dados', label: 'Concorrente 1' },
+    { id: 'sitec1', key: 'Site concorrente 1', src: 'dados', label: 'Site concorrente 1' },
+    { id: 'conc2', key: 'Concorrente 2', src: 'dados', label: 'Concorrente 2' },
+    { id: 'sitec2', key: 'Site concorrente 2', src: 'dados', label: 'Site concorrente 2' },
+    { id: 'fontes', key: 'Fontes', src: 'dados', label: 'Fontes', tipo: 'textarea', cheio: true },
+  ];
+  const EXTRAS = [
+    ['Rank', 'col', 'rank'], ['Nicho', 'dados', 'Nicho'], ['Endereço', 'col', 'endereco'], 
+    ['Nota', 'col', 'nota'], ['Avaliações', 'col', 'avaliacoes'], ['População (IBGE 2022)', 'dados', 'População (IBGE 2022)'],
+    ['Seguidores (nº)', 'dados', 'Seguidores (nº)'], ['Seguidores (obs.)', 'dados', 'Seguidores (obs.)'], ['E-mail público', 'dados', 'E-mail público'],
+    ['Link atual de contato', 'dados', 'Link atual de contato', 'link'], ["Link no 'Site' do Maps", 'dados', "Link no 'Site' do Maps", 'link'],
+    ['Gancho específico', 'dados', 'Gancho específico'], ['CTA', 'dados', 'CTA'],
+    ['Pts Reputação (0-15)', 'dados', 'Pts Reputação (0-15)'], ['Pts Avaliações (0-20)', 'dados', 'Pts Avaliações (0-20)'],
+    ['Pts Instagram (0-15)', 'dados', 'Pts Instagram (0-15)'], ['Pts Ausência de site (0-15)', 'dados', 'Pts Ausência de site (0-15)'],
+    ['Pts Estrutura (0-10)', 'dados', 'Pts Estrutura (0-10)'], ['Pts Oportunidade (0-15)', 'dados', 'Pts Oportunidade (0-15)'],
+    ['Pts Capacidade (0-10)', 'dados', 'Pts Capacidade (0-10)'],
+  ];
+  const MAPA = {
+    rank: 'Rank', nome: 'Nome comercial', profissional: 'Profissional responsável', segmento: 'Especialidade / segmento',
+    cidade: 'Cidade', uf: 'UF', endereco: 'Endereço', telefone: 'Telefone', instagram: 'Instagram', nota: 'Nota',
+    avaliacoes: 'Avaliações', problemas: 'Problemas identificados', oportunidade: 'Oportunidade comercial',
+    prioridade: 'Prioridade', score: 'SCORE (0-100)',
+  };
+  const CSV_COLS = ['rank', 'nome', 'profissional', 'segmento', 'cidade', 'uf', 'endereco', 'telefone', 'instagram', 'nota', 'avaliacoes', 'prioridade', 'score', 'problemas', 'oportunidade'];
+
+  // Compatível com navegadores móveis antigos (sem <dialog>.showModal).
+  function abrirDialog(d) {
+    if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+  }
+  function fecharDialog(d) {
+    if (d.close) d.close(); else d.removeAttribute('open');
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (v) => String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const numero = (v) => { if (v === '' || v == null) return null; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
+  const texto = (v) => (v == null ? null : String(v).trim() || null);
+  const dig = (tel) => String(tel || '').replace(/\D/g, '');
+  function waLink(tel, msg) {
+    let d = dig(tel);
+    if (!d) return null;
+    if (!d.startsWith('55')) d = '55' + d;
+    return 'https://wa.me/' + d + (msg ? '?text=' + encodeURIComponent(msg) : '');
+  }
+  function igLink(h) {
+    const u = String(h || '').trim().replace(/^@/, '');
+    return u ? 'https://instagram.com/' + u : null;
+  }
+  function prioHtml(p) {
+    if (!p) return '';
+    const k = String(p).toLowerCase();
+    const cls = k.startsWith('alt') ? 'alta' : k.startsWith('bai') ? 'baixa' : 'media';
+    return `<p class="prio"><span class="dot ${cls}"></span>${esc(p)}</p>`;
+  }
+  const valorDe = (l, spec) => (spec.src === 'col' ? l[spec.key] : (l.dados || {})[spec.key]) || '';
+
+  let colunas = [];
+  let leads = [];
+  let usuario = null;
+  let leadAberto = null;
+  let chatAberto = null;
+  let filtro = '';
+
+  function avisar(id, msg, erro) {
+    const el = $(id);
+    el.textContent = msg;
+    if (msg && !erro) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+  }
+
+  function mostrar(logado, email) {
+    $('login').hidden = logado;
+    $('app').hidden = !logado;
+    if (logado) { $('usuario').textContent = email; carregar(); }
+  }
+
+  async function carregar() {
+    const [c, l] = await Promise.all([
+      sb.from('colunas').select('*').order('ordem', { ascending: true }),
+      sb.from('leads').select('*').order('rank', { ascending: true }).limit(5000),
+    ]);
+    if (c.error || l.error) { avisar('erro', 'Não foi possível carregar: ' + (c.error || l.error).message, true); return; }
+    colunas = c.data;
+    leads = l.data;
+    const semColuna = leads.filter((x) => x.coluna_id == null);
+    if (semColuna.length && colunas.length) {
+      const primeira = colunas[0].id;
+      await sb.from('leads').update({ coluna_id: primeira }).is('coluna_id', null);
+      semColuna.forEach((x) => { x.coluna_id = primeira; });
+    }
+    render();
+  }
+
+  function cardHtml(l) {
+    const local = [l.cidade, l.uf].filter(Boolean).join(' - ');
+    return `
+    <article class="lead-card" draggable="true" data-id="${esc(l.id)}">
+      <div class="card-top"><h3>${esc(l.nome)}</h3>${l.score != null ? `<span class="score">${esc(l.score)}</span>` : ''}</div>
+      ${prioHtml(l.prioridade)}
+      ${l.dados && l.dados.Nicho ? `<p class="nicho">${esc(l.dados.Nicho)}</p>` : ''}
+      ${l.segmento ? `<p class="seg">${esc(l.segmento)}</p>` : ''}
+      ${local ? `<p class="meta">${esc(local)}</p>` : ''}
+      <div class="card-acoes"><button class="btn-chat" type="button" data-chat="${esc(l.id)}">Chat</button></div>
+    </article>`;
+  }
+
+  function render() {
+    const q = filtro.toLowerCase();
+    const visiveis = leads.filter((l) => !q || [l.nome, l.cidade, l.segmento, l.instagram, l.telefone].some((v) => String(v || '').toLowerCase().includes(q)));
+    const grupos = colunas.map((c) => ({ id: c.id, nome: c.nome, editavel: true }));
+    if (leads.some((l) => l.coluna_id == null)) grupos.push({ id: 'none', nome: 'Sem coluna', editavel: false });
+    $('board').innerHTML = grupos.map((g, i) => {
+      const itens = visiveis.filter((l) => (g.id === 'none' ? l.coluna_id == null : l.coluna_id === g.id));
+      const cor = PALETA[i % PALETA.length];
+      const acoes = g.editavel ? `<button class="icone" type="button" data-editar-coluna="${esc(g.id)}" aria-label="Editar coluna ${esc(g.nome)}">✎</button>` : '';
+      return `<section class="col" data-col="${esc(g.id)}" style="--c:${cor[0]};--t:${cor[1]}">
+        <header class="col-h"><h2>${esc(g.nome)}</h2><div class="acoes"><span class="count">${itens.length}</span>${acoes}</div></header>
+        <div class="drop">${itens.length ? itens.map(cardHtml).join('') : '<p class="vazio">Arraste um lead para cá</p>'}</div>
+      </section>`;
+    }).join('');
+    $('contagem').textContent = `${visiveis.length} de ${leads.length} leads`;
+  }
+
+  async function moverLead(id, colId) {
+    const lead = leads.find((l) => String(l.id) === String(id));
+    const destino = colId === 'none' ? null : colId;
+    if (!lead || lead.coluna_id === destino) return;
+    const anterior = lead.coluna_id;
+    lead.coluna_id = destino;
+    render();
+    const { error } = await sb.from('leads').update({ coluna_id: destino, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) { lead.coluna_id = anterior; render(); avisar('erro', 'Não foi possível mover: ' + error.message, true); }
+  }
+
+  // ----- Quadro -----
+  $('board').addEventListener('click', (e) => {
+    const chat = e.target.closest('[data-chat]');
+    if (chat) { abrirChat(chat.dataset.chat); return; }
+    if (e.target.closest('a')) return;
+    const editar = e.target.closest('[data-editar-coluna]');
+    if (editar) { abrirColuna(editar.dataset.editarColuna); return; }
+    const card = e.target.closest('.lead-card');
+    if (card) abrirLead(card.dataset.id);
+  });
+  $('board').addEventListener('dragstart', (e) => {
+    const card = e.target.closest('.lead-card');
+    if (!card) return;
+    e.dataTransfer.setData('text/plain', card.dataset.id);
+    e.dataTransfer.effectAllowed = 'move';
+    card.classList.add('arrastando');
+  });
+  $('board').addEventListener('dragend', (e) => {
+    const card = e.target.closest('.lead-card');
+    if (card) card.classList.remove('arrastando');
+    document.querySelectorAll('.drop.over').forEach((d) => d.classList.remove('over'));
+  });
+  $('board').addEventListener('dragover', (e) => {
+    const drop = e.target.closest('.drop');
+    if (!drop) return;
+    e.preventDefault();
+    drop.classList.add('over');
+  });
+  $('board').addEventListener('dragleave', (e) => {
+    const drop = e.target.closest('.drop');
+    if (drop && !drop.contains(e.relatedTarget)) drop.classList.remove('over');
+  });
+  $('board').addEventListener('drop', (e) => {
+    const col = e.target.closest('.col');
+    if (!col) return;
+    e.preventDefault();
+    col.querySelector('.drop').classList.remove('over');
+    moverLead(e.dataTransfer.getData('text/plain'), col.dataset.col);
+  });
+  $('busca').addEventListener('input', (e) => { filtro = e.target.value.trim(); render(); });
+
+  // ----- Pop-up do lead -----
+  function campoHtml(spec, valor) {
+    const cls = spec.cheio ? ' full' : '';
+    const dest = spec.destaque ? ' destaque' : '';
+    let campo;
+    if (spec.tipo === 'textarea') campo = `<textarea class="inp" name="${spec.id}" rows="3">${esc(valor)}</textarea>`;
+    else campo = `<input class="inp" name="${spec.id}" type="${spec.tipo === 'number' ? 'number' : 'text'}"${spec.tipo === 'number' ? ' step="any"' : ''} value="${esc(valor)}">`;
+    return `<label class="fl${cls}${dest}">${spec.label}${campo}</label>`;
+  }
+
+  const PAINEL = { 'Contato': 'principal', 'Presença digital': 'principal', 'Diagnóstico': 'diagnostico', 'Mensagens': 'mensagens', 'Concorrência': 'concorrencia' };
+  function montarPaineis(l) {
+    const out = { principal: '', diagnostico: '', mensagens: '', concorrencia: '' };
+    let atual = null, grade = '', sec = '';
+    const fecha = () => {
+      if (atual === null) return;
+      if (grade) { sec += `<div class="grid2">${grade}</div>`; grade = ''; }
+      if (sec) { out[atual] += sec + '</div>'; sec = ''; }
+    };
+    SECOES.forEach((spec) => {
+      if (spec.sec) {
+        fecha();
+        atual = PAINEL[spec.sec];
+        sec = `<div class="sec"><h3>${spec.sec}</h3>`;
+      } else {
+        grade += campoHtml(spec, valorDe(l, spec));
+      }
+    });
+    fecha();
+    return out;
+  }
+
+  function montarExtras(l) {
+    const itens = EXTRAS.map(([rotulo, src, chave, tipo]) => {
+      const v = src === 'col' ? l[chave] : (l.dados || {})[chave];
+      if (v == null || v === '') return '';
+      const val = tipo === 'link' && /^https?:/.test(String(v))
+        ? `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`
+        : esc(v);
+      return `<div><dt>${esc(rotulo)}</dt><dd>${val}</dd></div>`;
+    }).filter(Boolean).join('');
+    return `<dl class="extras">${itens || '<p class="vazio">Sem informações extras.</p>'}</dl>`;
+  }
+
+  function atualizarBotoes() {
+    const f = $('form-lead');
+    const tel = f.elements.telefone ? f.elements.telefone.value : '';
+    const msg = f.elements.msg1 ? f.elements.msg1.value.trim() : '';
+    const ig = f.elements.instagram ? f.elements.instagram.value : '';
+    const wa = waLink(tel, msg);
+    $('lead-wa').hidden = !wa;
+    if (wa) $('lead-wa').href = wa;
+    const iu = igLink(ig);
+    $('lead-ig').hidden = !iu;
+    if (iu) $('lead-ig').href = iu;
+  }
+
+  function atualizarMapa(l) {
+    const a = $('lead-maps');
+    a.classList.toggle('off', !l.maps);
+    a.href = l.maps || '#';
+    a.setAttribute('aria-disabled', l.maps ? 'false' : 'true');
+    a.title = l.maps ? 'Abrir no Google Maps' : 'Sem link do Google Maps';
+  }
+  $('lead-maps').addEventListener('click', (e) => { if (e.currentTarget.classList.contains('off')) e.preventDefault(); });
+
+  function abrirLead(id) {
+    const l = leads.find((x) => String(x.id) === String(id));
+    if (!l) return;
+    leadAberto = l.id;
+    $('lead-titulo').textContent = l.nome;
+    $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    const paineis = montarPaineis(l);
+    Object.entries(paineis).forEach(([aba, html]) => { $('painel-' + aba).innerHTML = html; });
+    $('painel-extras').innerHTML = montarExtras(l);
+    atualizarMapa(l);
+    atualizarBotoes();
+    trocarAba('principal');
+    $('lead-erro').textContent = '';
+    resetarExclusao();
+    abrirDialog($('dlg-lead'));
+  }
+
+  function trocarAba(nome) {
+    document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t.dataset.tab === nome));
+    document.querySelectorAll('.painel').forEach((pn) => { pn.hidden = pn.dataset.aba !== nome; });
+  }
+  document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => trocarAba(t.dataset.tab)));
+
+  $('form-lead').addEventListener('input', (e) => {
+    if (['telefone', 'msg1', 'instagram'].includes(e.target.name)) atualizarBotoes();
+  });
+
+  function fecharLead() { leadAberto = null; fecharDialog($('dlg-lead')); }
+  $('lead-fechar').addEventListener('click', fecharLead);
+  $('lead-cancelar').addEventListener('click', fecharLead);
+  $('dlg-lead').addEventListener('close', () => { leadAberto = null; });
+
+  $('lead-salvar').addEventListener('click', async () => {
+    const l = leads.find((x) => String(x.id) === String(leadAberto));
+    if (!l) return;
+    const f = $('form-lead');
+    const cols = {};
+    const dados = { ...(l.dados || {}) };
+    SECOES.forEach((spec) => {
+      if (spec.sec) return;
+      const el = f.elements[spec.id];
+      if (!el) return;
+      if (spec.src === 'col') cols[spec.key] = spec.tipo === 'number' ? numero(el.value) : texto(el.value);
+      else dados[spec.key] = texto(el.value) || '';
+    });
+    if (!cols.nome) { $('lead-erro').textContent = 'O nome comercial é obrigatório.'; return; }
+    $('lead-salvar').disabled = true;
+    const { error } = await sb.from('leads').update({ ...cols, dados, updated_at: new Date().toISOString() }).eq('id', l.id);
+    $('lead-salvar').disabled = false;
+    if (error) { $('lead-erro').textContent = 'Não foi possível salvar: ' + error.message; return; }
+    Object.assign(l, cols);
+    l.dados = dados;
+    render();
+    $('lead-titulo').textContent = l.nome;
+    $('lead-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    $('painel-extras').innerHTML = montarExtras(l);
+    avisar('ok', 'Alterações salvas.');
+  });
+
+  let excluirPronto = false;
+  function resetarExclusao() {
+    excluirPronto = false;
+    $('lead-excluir').textContent = 'Excluir lead';
+    $('lead-excluir').classList.remove('confirma');
+  }
+  $('lead-excluir').addEventListener('click', async () => {
+    if (!excluirPronto) {
+      excluirPronto = true;
+      $('lead-excluir').textContent = 'Confirmar exclusão';
+      $('lead-excluir').classList.add('confirma');
+      return;
+    }
+    const id = leadAberto;
+    const { error } = await sb.from('leads').delete().eq('id', id);
+    if (error) { $('lead-erro').textContent = 'Não foi possível excluir: ' + error.message; resetarExclusao(); return; }
+    leads = leads.filter((x) => String(x.id) !== String(id));
+    fecharLead();
+    render();
+    avisar('ok', 'Lead excluído.');
+  });
+
+  // ----- Limpar tudo (confirmação em dois passos) -----
+  let passoZerar = 1;
+  $('zerar').addEventListener('click', () => {
+    passoZerar = 1;
+    $('zerar-titulo').textContent = '1 - Tem certeza?';
+    $('zerar-texto').textContent = 'Isso apaga todos os leads e as observações do chat. Não dá para desfazer.';
+    $('zerar-sim').textContent = 'Sim';
+    $('zerar-erro').textContent = '';
+    abrirDialog($('dlg-zerar'));
+  });
+  $('zerar-nao').addEventListener('click', () => fecharDialog($('dlg-zerar')));
+  $('zerar-sim').addEventListener('click', async () => {
+    if (passoZerar === 1) {
+      passoZerar = 2;
+      $('zerar-titulo').textContent = '2 - Absoluta?';
+      $('zerar-texto').textContent = 'Última confirmação: todos os leads, colunas de cards e observações serão apagados.';
+      $('zerar-sim').textContent = 'Sim, apagar tudo';
+      return;
+    }
+    $('zerar-sim').disabled = true;
+    const { error } = await sb.from('leads').delete().gt('id', 0);
+    $('zerar-sim').disabled = false;
+    if (error) { $('zerar-erro').textContent = 'Não foi possível apagar: ' + error.message; return; }
+    leads = [];
+    fecharDialog($('dlg-zerar'));
+    fecharChat();
+    render();
+    avisar('ok', 'Todos os leads foram apagados.');
+  });
+
+  // ----- Chat de observações -----
+  function msgHtml(m) {
+    const eu = usuario && m.autor === usuario.email;
+    const hora = new Date(m.criado_em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    return `<div class="msg${eu ? ' eu' : ''}"><small>${eu ? 'Você' : esc(m.autor)} · ${esc(hora)}</small><p>${esc(m.texto)}</p></div>`;
+  }
+
+  async function carregarChat(id) {
+    const { data, error } = await sb.from('mensagens').select('*').eq('lead_id', id).order('criado_em', { ascending: true });
+    if (String(chatAberto) !== String(id)) return;
+    if (error) { $('chat').innerHTML = '<p class="vazio">Não foi possível carregar as observações.</p>'; return; }
+    $('chat').innerHTML = data.length ? data.map(msgHtml).join('') : '<p class="vazio">Nenhuma observação ainda.</p>';
+    $('chat').scrollTop = $('chat').scrollHeight;
+  }
+
+  function abrirChat(id) {
+    const l = leads.find((x) => String(x.id) === String(id));
+    if (!l) return;
+    chatAberto = l.id;
+    $('chat-titulo').textContent = 'Observações: ' + l.nome;
+    $('chat-sub').textContent = [l.segmento, [l.cidade, l.uf].filter(Boolean).join(' - ')].filter(Boolean).join(' · ');
+    $('chat').innerHTML = '<p class="vazio">Carregando...</p>';
+    $('msg-texto').value = '';
+    abrirDialog($('dlg-chat'));
+    carregarChat(l.id);
+    $('msg-texto').focus();
+  }
+
+  function fecharChat() { chatAberto = null; fecharDialog($('dlg-chat')); }
+  $('chat-fechar').addEventListener('click', fecharChat);
+  $('dlg-chat').addEventListener('close', () => { chatAberto = null; });
+
+  $('form-msg').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const txt = $('msg-texto').value.trim();
+    if (!txt || !chatAberto || !usuario) return;
+    const { error } = await sb.from('mensagens').insert({ lead_id: chatAberto, autor: usuario.email, texto: txt });
+    if (error) { avisar('erro', 'Não foi possível enviar: ' + error.message, true); return; }
+    $('msg-texto').value = '';
+  });
+
+  function ouvirChat() {
+    sb.channel('mensagens-crm')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, (payload) => {
+        if (String(payload.new.lead_id) !== String(chatAberto)) return;
+        const vazio = $('chat').querySelector('.vazio');
+        if (vazio) vazio.remove();
+        $('chat').insertAdjacentHTML('beforeend', msgHtml(payload.new));
+        $('chat').scrollTop = $('chat').scrollHeight;
+      })
+      .subscribe();
+  }
+
+  // ----- Colunas -----
+  let colunaEditando = null;
+  let excluirColunaPronto = false;
+
+  function abrirColuna(id) {
+    colunaEditando = id || null;
+    const c = colunas.find((x) => x.id === id);
+    $('coluna-titulo').textContent = c ? 'Editar coluna' : 'Nova coluna';
+    $('coluna-nome').value = c ? c.nome : '';
+    $('coluna-erro').textContent = '';
+    $('coluna-excluir').hidden = !c;
+    excluirColunaPronto = false;
+    $('coluna-excluir').textContent = 'Excluir coluna';
+    $('coluna-excluir').classList.remove('confirma');
+    abrirDialog($('dlg-coluna'));
+    $('coluna-nome').focus();
+  }
+
+  $('nova-coluna').addEventListener('click', () => abrirColuna(null));
+  $('coluna-cancelar').addEventListener('click', () => fecharDialog($('dlg-coluna')));
+
+  $('form-coluna').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nome = $('coluna-nome').value.trim();
+    if (!nome) { $('coluna-erro').textContent = 'Dê um nome para a coluna.'; return; }
+    if (colunaEditando) {
+      const { error } = await sb.from('colunas').update({ nome }).eq('id', colunaEditando);
+      if (error) { $('coluna-erro').textContent = 'Não foi possível salvar: ' + error.message; return; }
+      colunas.find((x) => x.id === colunaEditando).nome = nome;
+    } else {
+      const ordem = colunas.length ? Math.max(...colunas.map((c) => c.ordem)) + 1 : 1;
+      const { data, error } = await sb.from('colunas').insert({ nome, ordem }).select().single();
+      if (error) { $('coluna-erro').textContent = 'Não foi possível criar: ' + error.message; return; }
+      colunas.push(data);
+    }
+    fecharDialog($('dlg-coluna'));
+    render();
+  });
+
+  $('coluna-excluir').addEventListener('click', async () => {
+    if (!colunaEditando) return;
+    if (!excluirColunaPronto) {
+      excluirColunaPronto = true;
+      $('coluna-excluir').textContent = 'Confirmar exclusão';
+      $('coluna-excluir').classList.add('confirma');
+      return;
+    }
+    const { error } = await sb.from('colunas').delete().eq('id', colunaEditando);
+    if (error) { $('coluna-erro').textContent = 'Não foi possível excluir: ' + error.message; return; }
+    colunas = colunas.filter((x) => x.id !== colunaEditando);
+    leads.forEach((l) => { if (l.coluna_id === colunaEditando) l.coluna_id = null; });
+    fecharDialog($('dlg-coluna'));
+    render();
+    avisar('ok', 'Coluna excluída. Os leads dela ficaram em "Sem coluna".');
+  });
+
+  // ----- Importação (trouxa.xlsx ou planilha de leads) -----
+  // Lê a planilha célula a célula: guarda todas as colunas e o link do Google Maps (hiperlink).
+  function lerLinhas(ws) {
+    const faixa = XLSX.utils.decode_range(ws['!ref']);
+    const cabecalho = {};
+    for (let c = faixa.s.c; c <= faixa.e.c; c++) {
+      const cel = ws[XLSX.utils.encode_cell({ r: faixa.s.r, c })];
+      if (cel && cel.v !== undefined) cabecalho[c] = String(cel.v).trim();
+    }
+    const linhas = [];
+    for (let r = faixa.s.r + 1; r <= faixa.e.r; r++) {
+      const dados = {};
+      let maps = null;
+      Object.entries(cabecalho).forEach(([c, nome]) => {
+        const cel = ws[XLSX.utils.encode_cell({ r, c: Number(c) })];
+        dados[nome] = cel && cel.v !== undefined ? String(cel.v) : '';
+        // A biblioteca devolve o endereço com &amp; no lugar de &; sem decodificar, o Maps recebe o parâmetro errado.
+        if (/maps/i.test(nome) && cel && cel.l && cel.l.Target) maps = cel.l.Target.replace(/&amp;/g, '&');
+      });
+      if (Object.values(dados).some((v) => v !== '')) { dados.__maps = maps; linhas.push(dados); }
+    }
+    return linhas;
+  }
+
+  function mapear(r) {
+    const o = { dados: { ...r } };
+    delete o.dados.__maps;
+    for (const [campo, coluna] of Object.entries(MAPA)) {
+      const v = r[coluna];
+      if (['rank', 'avaliacoes', 'score'].includes(campo)) o[campo] = numero(v) == null ? null : Math.round(numero(v));
+      else if (campo === 'nota') o[campo] = numero(v);
+      else o[campo] = texto(v);
+    }
+    o.maps = r.__maps || null;
+    return o;
+  }
+
+  $('arquivo').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    avisar('ok', 'Lendo a planilha...');
+    try {
+      const wb = XLSX.read(await file.arrayBuffer(), { type: 'array', cellDates: false });
+      const aba = wb.SheetNames.includes('LEADS') ? 'LEADS' : wb.SheetNames[0];
+      const linhas = lerLinhas(wb.Sheets[aba]);
+      const porChave = new Map();
+      linhas.map(mapear).filter((r) => r.nome).forEach((r) => porChave.set((r.nome + '|' + (r.cidade || '')).toLowerCase(), r));
+      const registros = [...porChave.values()];
+      if (!registros.length) { avisar('erro', 'Nenhum lead encontrado na aba ' + aba + '.', true); return; }
+      for (let i = 0; i < registros.length; i += 200) {
+        const { error } = await sb.from('leads').upsert(registros.slice(i, i + 200), { onConflict: 'nome,cidade' });
+        if (error) { avisar('erro', 'Erro ao importar: ' + error.message, true); return; }
+      }
+      avisar('ok', registros.length + ' leads importados. Colunas, status e observações foram mantidos.');
+      await carregar();
+    } catch (err) {
+      avisar('erro', 'Não foi possível ler o arquivo: ' + err.message, true);
+    }
+  });
+
+  // ----- Exportação em CSV -----
+  $('exportar').addEventListener('click', () => {
+    const cel = (v) => '"' + String(v || '').replace(/"/g, '""') + '"';
+    const nomeColuna = (id) => (colunas.find((c) => c.id === id) || {}).nome || '';
+    const cab = [...CSV_COLS, 'coluna'];
+    const linhas = [cab.join(';')].concat(leads.map((l) => [...CSV_COLS.map((c) => l[c]), nomeColuna(l.coluna_id)].map(cel).join(';')));
+    const blob = new Blob(['﻿' + linhas.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'leads-sharp.csv';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  // ----- Login -----
+  $('form-login').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('err').textContent = '';
+    $('entrar').disabled = true;
+    const { data, error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('senha').value });
+    $('entrar').disabled = false;
+    if (error || !data.session) { $('err').textContent = 'E-mail ou senha inválidos.'; return; }
+    $('senha').value = '';
+    entrar(data.session.user);
+  });
+
+  function entrar(user) {
+    usuario = user;
+    mostrar(true, user.email);
+    ouvirChat();
+  }
+
+  $('sair').addEventListener('click', async () => { await sb.auth.signOut(); leads = []; colunas = []; usuario = null; mostrar(false); });
+
+  sb.auth.getSession().then(({ data }) => { if (data.session) entrar(data.session.user); else mostrar(false); });
+})();
+</script>
+</body>
+</html>
