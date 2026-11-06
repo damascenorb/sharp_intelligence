@@ -18,7 +18,7 @@ PAGES = [
  ('termos', 'Termos de uso | Sharp Intelligence', 'As regras para usar o site da Sharp Intelligence.', ''),
  ('portfolio', 'Portfólio | Sharp Intelligence', 'Prévias de sites já entregues pela Sharp Intelligence para MEIs e pequenas empresas.', 'portfolio'),
 ]
-NAV = [('como-trabalhamos', 'Como trabalhamos'), ('projetos', 'Projetos'), ('sobre', 'Sobre'), ('contato', 'Contato')]
+NAV = [('como-trabalhamos', 'Como trabalhamos'), ('portfolio', 'Portfólio'), ('projetos', 'Projetos'), ('sobre', 'Sobre'), ('contato', 'Contato')]
 SOL = [('web', 'Sharp Web', 'Sites e páginas comerciais', 'web'), ('systems', 'Sharp Systems', 'Sistemas online sob medida', 'systems'), ('automation', 'Sharp Automation &amp; AI', 'Automação e inteligência artificial', 'auto'), ('data', 'Sharp Data', 'Dashboards e relatórios', 'data')]
 CHEV = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
 
