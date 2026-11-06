@@ -16,6 +16,7 @@ PAGES = [
  ('contato', 'Contato | Sharp Intelligence', 'Apresente seu desafio pelo WhatsApp (11) 93430-4296 ou por e-mail. Atendimento em todo o Brasil, 100% online.', 'contato'),
  ('privacidade', 'Política de privacidade | Sharp Intelligence', 'Como a Sharp Intelligence trata os seus dados, de acordo com a LGPD.', ''),
  ('termos', 'Termos de uso | Sharp Intelligence', 'As regras para usar o site da Sharp Intelligence.', ''),
+ ('portfolio', 'Portfólio | Sharp Intelligence', 'Prévias de sites já entregues pela Sharp Intelligence para MEIs e pequenas empresas.', 'portfolio'),
 ]
 NAV = [('como-trabalhamos', 'Como trabalhamos'), ('projetos', 'Projetos'), ('sobre', 'Sobre'), ('contato', 'Contato')]
 SOL = [('web', 'Sharp Web', 'Sites e páginas comerciais', 'web'), ('systems', 'Sharp Systems', 'Sistemas online sob medida', 'systems'), ('automation', 'Sharp Automation &amp; AI', 'Automação e inteligência artificial', 'auto'), ('data', 'Sharp Data', 'Dashboards e relatórios', 'data')]
@@ -65,7 +66,7 @@ def layout(name, title, desc, cur, body):
   <div class="ft-grid">
     <div><a class="brand" href="index.html" style="padding:0"><img src="assets/sharp-mark.png" alt="" width="29" height="42"><span>Sharp Intelligence</span></a><p style="margin-top:14px;max-width:30ch">Tecnologia aplicada aos negócios. Você tem um problema. Nós desenvolvemos a solução.</p></div>
     <div><h2>Soluções</h2>{sol_links}</div>
-    <div><h2>Empresa</h2><a href="como-trabalhamos.html">Como trabalhamos</a><a href="projetos.html">Projetos</a><a href="sobre.html">Sobre</a><a href="contato.html">Contato</a><a href="administrativo.html">Administrativo</a></div>
+    <div><h2>Empresa</h2><a href="como-trabalhamos.html">Como trabalhamos</a><a href="projetos.html">Projetos</a><a href="portfolio.html">Portfólio</a><a href="sobre.html">Sobre</a><a href="contato.html">Contato</a><a href="administrativo.html">Administrativo</a></div>
     <div><h2>Legal</h2><a href="privacidade.html">Privacidade</a><a href="termos.html">Termos de uso</a></div>
     <div><h2>Fale com a Sharp</h2><a href="{WA}" target="_blank" rel="noopener">WhatsApp (11) 93430-4296</a><a href="mailto:{EMAIL}">{EMAIL}</a><a href="{INSTA}" target="_blank" rel="noopener">Instagram @sharpintelligence</a><p>Atendimento em todo o Brasil, 100% online.</p></div>
   </div>
